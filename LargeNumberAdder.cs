@@ -17,7 +17,6 @@ namespace Calc
             int lMax = 0, carry = 0;
             StringBuilder sb = new StringBuilder();
 
-
             foreach (List<int> l in matrix)
             {
                 lMax = lMax < l.Count ? l.Count : lMax;

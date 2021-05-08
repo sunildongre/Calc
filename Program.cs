@@ -29,13 +29,6 @@ namespace Calc
             System.Console.ReadKey();
         }
 
-        private static string[] ReadComputeExpression()
-        {
-            System.Console.Write(":");
-            string expression = System.Console.ReadLine();
-            return expression.Split(' ');
-        }
-
         #region Validator and Help messages
         private static string[] ValidateInutParameters(string[] args)
         {
@@ -63,17 +56,12 @@ namespace Calc
         {
             string num1 = args[0];
             char[] operationArr = args[1].ToCharArray();
-            char operation = ' ';
             string num2 = args[2];
 
             if (operationArr.Length != 1 || !options.Contains(operationArr[0]))
             {
                 System.Console.WriteLine("Operator incorrectly specified.");
                 return false;
-            }
-            else
-            {
-                operation = operationArr[0];
             }
 
             Regex rgx = new Regex("[+-]?[0-9]+");

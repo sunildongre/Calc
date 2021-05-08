@@ -64,6 +64,7 @@ namespace Calc
                 {
                     string prefix = "";
                     int n = m[j];
+                    //add the 0 to handle decimal place of the multiplying number
                     for (int k = 0; k < j; k++)
                     {
                         prefix += "0";

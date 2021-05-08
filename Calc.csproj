@@ -50,6 +50,7 @@
     <Compile Include="LargeNumberMultiplier.cs" />
     <Compile Include="LargeNumberSubtractor.cs" />
     <Compile Include="CalcLogger.cs" />
+    <Compile Include="NumercStringUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringMatrixTransformer.cs" />
@@ -57,5 +58,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\mult.txt" />
+    <Content Include="TestFiles\sub.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy ..\..\TestFiles\*.* .\</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>
