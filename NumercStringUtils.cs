@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Calc
 {
@@ -18,6 +14,7 @@ namespace Calc
             }
             return true;
         }
+
         public string TrimLeadingZeros(string str)
         {
             var arr = str.ToCharArray();
@@ -79,6 +76,18 @@ namespace Calc
                 return false;
             }
             return false;
+        }
+
+        public IList<string> GetMultiples(string number, int multiples)
+        {
+            LargeNumberMultiplier lm = new LargeNumberMultiplier();
+            IList<string> results = new List<string>();
+
+            for(int i = 1; i <= multiples; i++)
+            {
+                results.Add(lm.Compute(new List<string>() { number, i.ToString() }));
+            }
+            return results;
         }
     }
 }

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calc
 {
     public class LargeNumberDivider : ILargeNumberComputer
     {
         private bool _decemalInQuotient = false;
+
         public string Compute(IList<string> numbers)
         {
             if (numbers.Count != 2)
@@ -28,7 +26,8 @@ namespace Calc
 
             if (n == d)
                 return "1";
-
+            
+            // assumption n > d 
             return DoDivision(n, d);
         }
 
@@ -37,14 +36,31 @@ namespace Calc
         private string DoDivision(string n, string d)
         {
             NumercStringUtils nsu = new NumercStringUtils();
+            int i = d.Length;
+            string ni = n.Substring(0, i);
+
+            if (!nsu.OneGreaterThanTwo(ni, d))
+            {
+                ni = n.Substring(i, ++i);
+            }
+
+            for(int j = 1; j < 10; j++)
+            {
+
+            }
 
             if (nsu.OneGreaterThanTwo(n, d))
             {
                 //answer > 1
+                
+                //if(n.Length - d.Length > 1)
+                //{ Find}
+
             }
             else
             {
                 //answer < 1
+                // lets deal with it later
             }
 
             return "";

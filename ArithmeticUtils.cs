@@ -13,5 +13,10 @@ namespace Calc
             opt = number % 10;
             carry = (number - opt) / 10;
         }
+
+        public string[] GetMultiples(string number, int count)
+        {
+            return null;
+        }
     }
 }
