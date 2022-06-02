@@ -15,11 +15,24 @@ namespace Calc
             return true;
         }
 
+        public bool IsZeroString(string str)
+        {
+            for(int i = 0; i < str.Length; i++)
+            {
+                if(str[i] != '0')
+                    return false;
+            }
+            return true;
+        }
+
         public string TrimLeadingZeros(string str)
         {
+            if (str == null)
+                return str;
+
             var arr = str.ToCharArray();
             int i = 0;
-            while (i <= arr.Length && arr[i] == '0')
+            while (i < arr.Length && arr[i] == '0')
             {
                 i++;
             }
@@ -38,44 +51,61 @@ namespace Calc
             }
         }
 
-        public bool IsZeroString(string str)
+        //public bool IsZeroString(string str)
+        //{
+        //    return TrimLeadingZeros(str).Length == 0;
+        //}
+
+        public bool OneGreaterThanTwo(string one, string two)
         {
-            return TrimLeadingZeros(str) == "0" ? true : false;
+            if (one == two)
+                return false;
+            else if (IsZeroString(one) && !IsZeroString(two))
+                return false;
+            else if (!IsZeroString(one) && IsZeroString(two))
+                return true;
+            else if (!IsZeroString(one) && !IsZeroString(two))
+            {
+                var o = TrimLeadingZeros(one);
+                var t = TrimLeadingZeros(two);
+                if (o.Length > t.Length)
+                {
+                    return true;
+                }
+                else if (o.Length < t.Length)
+                {
+                    return false;
+                }
+                else if (o.Length == t.Length)
+                {
+                    var oArr = o.ToCharArray();
+                    var tArr = t.ToCharArray();
+                    for (int i = 0; i < oArr.Length; i++)
+                    {
+                        if (oArr[i] > tArr[i])
+                        {
+                            return true;
+                        }
+                        else if (oArr[i] < tArr[i])
+                        {
+                            return false;
+                        }
+                        else if (oArr[i] == tArr[i])
+                        {
+                            continue;
+                        }
+                    }
+                    return false;
+                    //should never reach here, n==d check above should have handled this
+                }
+                else return false;
+            }
+            else return false;
         }
 
-        public bool OneGreaterThanTwo(string n, string d)
+        public bool OneGreaterThanOrEqualToTwo(string one, string two)
         {
-            if (n.Length > d.Length)
-            {
-                return true;
-            }
-            else if (n.Length < d.Length)
-            {
-                return false;
-            }
-            else if (n.Length == d.Length)
-            {
-                var narr = n.ToCharArray();
-                var darr = d.ToCharArray();
-                for (int i = 0; i < narr.Length; i++)
-                {
-                    if (narr[i] > darr[i])
-                    {
-                        return true;
-                    }
-                    else if (darr[i] > narr[i])
-                    {
-                        return false;
-                    }
-                    else if (narr[i] == darr[i])
-                    {
-                        continue;
-                    }
-                }
-                //should never reach here, n==d check above should have handled this
-                return false;
-            }
-            return false;
+            return OneGreaterThanTwo(one, two) ? true : one.Equals(two);
         }
 
         public IList<string> GetMultiples(string number, int multiples)

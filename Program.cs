@@ -19,7 +19,7 @@ namespace Calc
             arguments = ValidateInutParameters(args);
 
             string num1 = arguments[0];
-            CalcLogger.Instance.DebugConsoleLogLine(num1);
+            CalcLogger.Instance.DebugConsoleLogLine(num1); 
             string num2 = arguments[2];
             CalcLogger.Instance.DebugConsoleLogLine(num2);
             char op = arguments[1].ToCharArray()[0];
