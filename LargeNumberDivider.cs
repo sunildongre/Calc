@@ -37,7 +37,7 @@ namespace Calc
         private void BuildMultiples(string number)
         {
             LargeNumberMultiplier lnm = new LargeNumberMultiplier();
-            for (int j = 1; j < 10; j++)
+            for (int j = 1; j <= 10; j++)
             {
                 multiples.Add(lnm.Compute(new List<string>() { j.ToString(), number }));
             }
@@ -104,7 +104,8 @@ namespace Calc
 
                 for (int i = 0; i < 10; i++)
                 {
-                    if(ni.Equals(multiples[i]))
+                    //if(ni.Equals(multiples[i]))
+                    if (nsu.OneEqualToTwo(ni, multiples[i]))
                     {
                         remainder = "0";
                         q += (i + 1).ToString(); // exact match so we need that multiple

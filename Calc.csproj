@@ -59,6 +59,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\div.txt" />
+    <Content Include="TestFiles\divtestmult.txt" />
     <Content Include="TestFiles\mult.txt" />
     <Content Include="TestFiles\sub.txt" />
   </ItemGroup>

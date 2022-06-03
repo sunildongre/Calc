@@ -51,14 +51,20 @@ namespace Calc
             }
         }
 
-        //public bool IsZeroString(string str)
-        //{
-        //    return TrimLeadingZeros(str).Length == 0;
-        //}
+        public bool OneEqualToTwo(string one, string two)
+        {
+            var len = one.Length > two.Length ? two.Length : one.Length;
+
+            for(int i = 0; i < len; i++)
+            {
+                if (one[i] != two[i]) return false;
+            }
+            return true;
+        }
 
         public bool OneGreaterThanTwo(string one, string two)
         {
-            if (one == two)
+            if (OneEqualToTwo(one, two))
                 return false;
             else if (IsZeroString(one) && !IsZeroString(two))
                 return false;
