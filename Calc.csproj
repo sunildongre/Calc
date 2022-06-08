@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArithmeticUtils.cs" />
+    <Compile Include="ProgramMessages.cs" />
+    <Compile Include="ProgramEnums.cs" />
+    <Compile Include="ProgramInputValidator.cs" />
+    <Compile Include="ProgramIOHandler.cs" />
     <Compile Include="ILargeNumberComputer.cs" />
     <Compile Include="LargeNumberAdder.cs" />
     <Compile Include="LargeNumberDivider.cs" />
@@ -53,6 +57,7 @@
     <Compile Include="NumercStringUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AtomicCalcParams.cs" />
     <Compile Include="StringMatrixTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
