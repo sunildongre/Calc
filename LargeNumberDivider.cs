@@ -40,9 +40,9 @@ namespace Calc
         {
             LargeNumberMultiplier lnm = new LargeNumberMultiplier();
             object mLoc = new object();
-            IList<int> mindex = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            IList<int> ix = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            Parallel.ForEach(mindex, (m, s, i) =>
+            Parallel.ForEach(ix, (i, s, m) =>
             {
                 var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() { i.ToString(), number }));
                 lock (mLoc) { multiples.Add(res); }
@@ -103,20 +103,18 @@ namespace Calc
             {
                 if (nsu.IsZeroString(ni)) break;
 
-
-                for (int i = 0; i < 10; i++)
+                for (int i = 1; i <= 10; i++)
                 {
-                    //if(ni.Equals(multiples[i]))
                     if (nsu.OneEqualToTwo(ni, multiples[i]))
                     {
                         remainder = "0";
-                        q += (i + 1).ToString(); // exact match so we need that multiple
+                        q += i.ToString(); // exact match so we need that multiple
                         break;
                     }
                     else if (nsu.OneGreaterThanTwo(multiples[i], ni))
                     {
                         remainder = sb.Compute(new List<string>() { ni, multiples[i - 1] });
-                        q += i.ToString(); // found larger multiple, so picki, the one before for successful subtraction
+                        q += (i - 1).ToString(); // found larger multiple, so picki, the one before for successful subtraction
                         break;
                     }
                 }

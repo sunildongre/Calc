@@ -5,13 +5,8 @@ namespace Calc
 {
     public class Program
     {
-        
-        
-        private static RunMode mode;
-        
         static void Main(string[] args)
         {
-            mode = RunMode.COMMAND_LINE;
             string[] arguments;
             if(args.Length == 0)
             {
@@ -19,6 +14,7 @@ namespace Calc
                 System.Console.ReadKey();
             }
 
+            // this will filter the operating mode and will be used by the Program IO handler when it is invoked
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);
 
             string num1 = arguments[0];
@@ -27,7 +23,7 @@ namespace Calc
             CalcLogger.Instance.DebugConsoleLogLine(num2);
             char op = arguments[1].ToCharArray()[0];
 
-            ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op), ProgramInputValidator.Instance.Mode);
+            ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op));
             
             System.Console.ReadKey();
         }

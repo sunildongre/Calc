@@ -31,6 +31,7 @@ namespace Calc
                 for (int i = 0; i < lines.Length; i++)
                 {
                     string[] fragments = lines[i].Split(' ');
+
                     for (int j = 0; j < fragments.Length; j++)
                         if (fragments[j].Length > 0 && !fragments[j].Contains(answerPrefix))
                             arguments.Add(fragments[j]);
@@ -48,12 +49,12 @@ namespace Calc
         }
 
 
-        public void HandleOutput(string[] args, string result, RunMode mode)
+        public void HandleOutput(string[] args, string result)
         {
             result = answerPrefix + result;
             CalcLogger.Instance.DebugConsoleLogLine(result);
 
-            if (mode == RunMode.FILE)
+            if (ProgramInputValidator.Instance.Mode == RunMode.FILE)
             {
                 using (StreamWriter sw = File.AppendText(args[1]))
                 {
