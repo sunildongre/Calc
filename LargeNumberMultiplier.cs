@@ -12,7 +12,7 @@ namespace Calc
         {
             public string Compute(IList<string> numbers)
             {
-                if(numbers.Count != 2)
+                if (numbers.Count != 2)
                 {
                     throw new Exception("Invalid number of arguments, 2 expected, found: " + numbers.Count);
                 }
@@ -32,7 +32,7 @@ namespace Calc
                     au.GetCarryBase10(ref x, ref y, ref carry);
                     sb.Append(y);
                 }
-                if(carry != 0)
+                if (carry != 0)
                 {
                     sb.Append(carry);
                 }
@@ -42,7 +42,7 @@ namespace Calc
 
         public string Compute(IList<string> numbers)
         {
-            if(numbers.Count < 2)
+            if (numbers.Count < 2)
             {
                 throw new Exception("Need at least 2 numbers to multiply, found: " + numbers.Count);
             }
@@ -54,24 +54,25 @@ namespace Calc
             string num = numbers[0];
             IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers);
 
-            for(int i = 1; i < numbers.Count; i++)
+            for (int i = 1; i < numbers.Count; i++)
             {
                 IList<int> m = matrix.ElementAt(i);
                 ILargeNumberComputer lom = new LargeToOneNumberMultiplier();
                 IList<string> stageIntermediates = new List<string>();
+                object listlock = new object();
 
-                for(int j = 0; j < m.Count; j++)
+                Parallel.ForEach(m, (mm, s, index) =>
                 {
                     string prefix = "";
-                    int n = m[j];
-                    //add the 0 to handle decimal place of the multiplying number
-                    for (int k = 0; k < j; k++)
+                    for (int k = 0; k < index; k++)
                     {
                         prefix += "0";
                     }
+                    var res = lom.Compute(new List<string>() { num, mm.ToString() }) + prefix;
+                    lock (listlock) { stageIntermediates.Add(res); }
 
-                    stageIntermediates.Add(lom.Compute(new List<string>() { num, n.ToString() }) + prefix);
-                }
+                });
+
                 num = a.Compute(stageIntermediates);
             }
             return num;

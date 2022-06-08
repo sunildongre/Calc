@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 namespace Calc
 {
     public class LargeNumberDivider : ILargeNumberComputer
     {
         private bool _decemalInQuotient = false;
-        private List<string> multiples = new List<string>();
+        private IDictionary<long, string> multiples = new Dictionary<long, string>();
         NumercStringUtils nsu = new NumercStringUtils();
         int nPos = 0;
         string n, d, q;
@@ -37,10 +39,14 @@ namespace Calc
         private void BuildMultiples(string number)
         {
             LargeNumberMultiplier lnm = new LargeNumberMultiplier();
-            for (int j = 1; j <= 10; j++)
+            object mLoc = new object();
+            IList<int> mindex = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            Parallel.ForEach(mindex, (m, s, i) =>
             {
-                multiples.Add(lnm.Compute(new List<string>() { j.ToString(), number }));
-            }
+                var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() { i.ToString(), number }));
+                lock (mLoc) { multiples.Add(res); }
+            });
         }
 
 
@@ -63,10 +69,6 @@ namespace Calc
                     return n.Substring(0, d.Length + 1);
                 }
             }
-            //else if(remainder == "0")
-            //{ 
-            //    return remainder;
-            //}
             else
             {
                 if(nsu.OneGreaterThanTwo(remainder, d))
