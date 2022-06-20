@@ -12,7 +12,10 @@ namespace Calc
             {
                 ProgramMessages.Instance.PrintHelpText();
                 System.Console.ReadKey();
+                return;
             }
+
+            // need a fast input parser
 
             // this will filter the operating mode and will be used by the Program IO handler when it is invoked
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);

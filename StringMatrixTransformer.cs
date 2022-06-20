@@ -10,8 +10,6 @@ namespace Calc
     {
         public IList<IList<int>> TransformStringListToReversedIntMatrix(IList<string> lNums)
         {
-            int lNumMax = lNums.OrderByDescending(n => n.Length).First().Length;
-
             IList<IList<int>> matrix = new List<IList<int>>();
 
             for (int i = 0; i < lNums.Count; i++)
@@ -23,27 +21,36 @@ namespace Calc
 
         public IList<int> TransformStringtoReverseIntList(string number)
         {
-            var arr = number.ToCharArray();
-            Array.Reverse(arr);
-            int arrLen = arr.Length;
             List<int> row = new List<int>();
+            StringBuilder sb = new StringBuilder();
 
-            for (int j = 0; j < arrLen; j++)
+            for (var j = number.Length - 1; j >= 0; j--)
             {
-                row.Add(int.Parse(arr[j].ToString()));
+                switch (number[j])
+                {
+                    case '0': row.Add(0); break;
+                    case '1': row.Add(1); break;
+                    case '2': row.Add(2); break;
+                    case '3': row.Add(3); break;
+                    case '4': row.Add(4); break;
+                    case '5': row.Add(5); break;
+                    case '6': row.Add(6); break;
+                    case '7': row.Add(7); break;
+                    case '8': row.Add(8); break;
+                    case '9': row.Add(9); break;
+                }
             }
             return row;
         }
 
         public string ReverseString(string str)
         {
-            char[] chars = str.ToCharArray();
-            char[] result = new char[chars.Length];
-            for (int i = 0, j = str.Length - 1; i < str.Length; i++, j--)
+            StringBuilder sb = new StringBuilder();
+            for (var j = str.Length - 1; j >= 0;  j--)
             {
-                result[i] = chars[j];
+                sb.Append(str[j]);
             }
-            return new string(result);
+            return sb.ToString();
         }
     }
 }

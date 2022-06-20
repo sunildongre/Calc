@@ -38,7 +38,7 @@ namespace Calc
 
         private void BuildMultiples(string number)
         {
-            LargeNumberMultiplier lnm = new LargeNumberMultiplier();
+            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
             object mLoc = new object();
             IList<int> ix = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
