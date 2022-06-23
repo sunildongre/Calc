@@ -16,7 +16,7 @@ namespace Calc
             }
 
             // need a fast input parser
-
+            ArithmeticUtils au = new ArithmeticUtils();
             // this will filter the operating mode and will be used by the Program IO handler when it is invoked
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);
 
@@ -26,8 +26,10 @@ namespace Calc
             CalcLogger.Instance.DebugConsoleLogLine(num2);
             char op = arguments[1].ToCharArray()[0];
 
+            var t1 = System.DateTime.Now;
             ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op));
-            
+            var t2 = System.DateTime.Now;
+            System.Console.WriteLine("Time taken to execute the calculation: {0}", t2 - t1);
             System.Console.ReadKey();
         }
 

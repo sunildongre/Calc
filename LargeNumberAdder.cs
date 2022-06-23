@@ -22,15 +22,15 @@ namespace Calc
                 lMax = lMax < l.Count ? l.Count : lMax;
             }
             
-            for(int i = 0; i < lMax; i ++)
+            for(var i = 0; i < lMax; i ++)
             {
-                int x = carry;
+                var x = carry;
                 carry = 0;
                 foreach (List<int> l in matrix)
                 {
                     x += l.ElementAtOrDefault(i);
                 }
-                int y = 0;
+                var y = 0;
                 au.GetCarryBase10(ref x, ref y, ref carry);
                 sb.Append(y);
             }

@@ -8,8 +8,9 @@ namespace Calc
     public class LargeNumberDivider : ILargeNumberComputer
     {
         private bool _decemalInQuotient = false;
-        private IDictionary<long, string> multiples = new Dictionary<long, string>();
+        private IDictionary<int, string> multiples = new Dictionary<int, string>();
         NumercStringUtils nsu = new NumercStringUtils();
+        ArithmeticUtils au = new ArithmeticUtils();
         int nPos = 0;
         string n, d, q;
 
@@ -32,25 +33,11 @@ namespace Calc
                 return "1";
 
             // assumption n > d 
-            BuildMultiples(d);
+            multiples = au.GetMultiples(d);
             return DoDivision(n, d);
         }
 
-        private void BuildMultiples(string number)
-        {
-            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
-            object mLoc = new object();
-            IList<int> ix = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            Parallel.ForEach(ix, (i, s, m) =>
-            {
-                var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() { i.ToString(), number }));
-                lock (mLoc) { multiples.Add(res); }
-            });
-        }
-
-
-        string GetNextDividendString(string remainder, string divisor)
+        string GetNextDividendString(string remainder)
         {
             if (nPos >= n.Length)
                 return null;
@@ -77,7 +64,7 @@ namespace Calc
                 }
                 else
                 {
-                    bool dq = false;
+                    var dq = false;
                     do
                     {
                         remainder += n.Substring(nPos++, 1);
@@ -97,13 +84,13 @@ namespace Calc
         {
             NumercStringUtils nsu = new NumercStringUtils();
             ILargeNumberComputer sb = new LargeNumberSubtractor();
-            string ni = GetNextDividendString(null, d);
-            string remainder = "";
+            var ni = GetNextDividendString(null);
+            var remainder = "";
             do
             {
                 if (nsu.IsZeroString(ni)) break;
 
-                for (int i = 1; i <= 10; i++)
+                for (var i = 1; i <= 10; i++)
                 {
                     if (nsu.OneEqualToTwo(ni, multiples[i]))
                     {
@@ -119,7 +106,7 @@ namespace Calc
                     }
                 }
 
-                ni = nsu.TrimLeadingZeros(GetNextDividendString(remainder, d));
+                ni = nsu.TrimLeadingZeros(GetNextDividendString(remainder));
             } while (ni != null && !ni.Equals(remainder));
 
             return q;

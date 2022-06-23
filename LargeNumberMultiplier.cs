@@ -19,7 +19,8 @@ namespace Calc
             ILargeNumberComputer a = new LargeNumberAdder();
             ArithmeticUtils au = new ArithmeticUtils();
 
-            string num = numbers[0];
+            var num = numbers[0];
+            var dict = au.GetMultiples(num);
 
             // hack to speed up division
             // ideally this should be replaced with pattern match (?1[0]+$) - I think
@@ -35,25 +36,23 @@ namespace Calc
 
             IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers);
 
-            for (int i = 1; i < numbers.Count; i++)
+            for (var i = 1; i < numbers.Count; i++)
             {
-                IList<int> m = matrix.ElementAt(i);
-                ILargeNumberComputer lom = new LargeToOneNumberMultiplier();
+                List<int> m = matrix.ElementAt(i).ToList();
                 IList<string> stageIntermediates = new List<string>();
-                object listlock = new object();
-
-                Parallel.ForEach(m, (mm, s, index) =>
+                //m.ForEach(mm => stageIntermediates.Add(dict[mm]));
+                for(var j = 0; j < m.Count; j++)
                 {
-                    string prefix = "";
-                    for (int k = 0; k < index; k++)
+                    var mm = m[j];
+                    if (mm == 0) continue;
+                    var prefix = "";
+                    for (var k = 0; k < j; k++)
                     {
                         prefix += "0";
                     }
-                    var res = lom.Compute(new List<string>() { num, mm.ToString() }) + prefix;
-                    lock (listlock) { stageIntermediates.Add(res); }
 
-                });
-
+                    stageIntermediates.Add(dict[mm] + prefix);
+                }
                 num = a.Compute(stageIntermediates);
             }
             return num;
