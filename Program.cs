@@ -20,11 +20,11 @@ namespace Calc
             // this will filter the operating mode and will be used by the Program IO handler when it is invoked
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);
 
-            string num1 = arguments[0];
+            var num1 = arguments[0];
             CalcLogger.Instance.DebugConsoleLogLine(num1); 
-            string num2 = arguments[2];
+            var num2 = arguments[2];
             CalcLogger.Instance.DebugConsoleLogLine(num2);
-            char op = arguments[1].ToCharArray()[0];
+            var op = arguments[1].ToCharArray()[0];
 
             var t1 = System.DateTime.Now;
             ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op));
@@ -35,7 +35,7 @@ namespace Calc
 
         private static string Run(string num1, string num2, char op)
         {
-            string[] numbers = new string[] { num1, num2};
+            var numbers = new string[] { num1, num2};
             switch(op)
             {
                 case 'a':

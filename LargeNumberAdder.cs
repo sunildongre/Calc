@@ -34,7 +34,8 @@ namespace Calc
                 au.GetCarryBase10(ref x, ref y, ref carry);
                 sb.Append(y);
             }
-            
+            if(carry != 0)
+                sb.Append(carry);
             return smt.ReverseString(sb.ToString());
         }
     }

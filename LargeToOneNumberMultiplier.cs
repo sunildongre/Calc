@@ -36,12 +36,6 @@ namespace Calc
             foreach (var bn in number)
             {
                 au.GetCarryBase10forSingleMultiple(ref carry, bn, n, ref y);
-                if (carry >= 10)
-                {
-                    Console.WriteLine("Carry greater than 10 noticed...!");
-                    throw new Exception("Something weird has happened...! \nA carry lookup yielded a number greater than 10");
-                }
-
                 sb.Append(y);
             }
             if (carry != 0)

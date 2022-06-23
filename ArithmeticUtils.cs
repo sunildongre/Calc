@@ -69,6 +69,7 @@ namespace Calc
             opt = number % 10;
             carry = (number - opt) / 10;
         }
+
         public IDictionary<int, string> GetMultiples(string number)
         {
             LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();

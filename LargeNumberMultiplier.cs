@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Calc
@@ -40,18 +41,17 @@ namespace Calc
             {
                 List<int> m = matrix.ElementAt(i).ToList();
                 IList<string> stageIntermediates = new List<string>();
-                //m.ForEach(mm => stageIntermediates.Add(dict[mm]));
-                for(var j = 0; j < m.Count; j++)
+                string p = "";
+                for (var j = 0; j < m.Count; j++)
                 {
                     var mm = m[j];
-                    if (mm == 0) continue;
-                    var prefix = "";
-                    for (var k = 0; k < j; k++)
-                    {
-                        prefix += "0";
-                    }
 
-                    stageIntermediates.Add(dict[mm] + prefix);
+                    if (mm == 0) continue;
+
+                    while (p.Length < j)
+                        p += "0";
+
+                    stageIntermediates.Add(dict[mm] + p);
                 }
                 num = a.Compute(stageIntermediates);
             }
