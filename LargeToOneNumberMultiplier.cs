@@ -19,7 +19,7 @@ namespace Calc
                 throw new Exception("Invalid number of arguments, 2 expected, found: " + numbers.Count);
             }
 
-            // hack to speed up division
+            // hack to speed up multiplication and division
             // ideally this should be replaced with pattern match (?1[0]+$) - I think
             // optimizations for patterns [multiples like: X00000... or X0000Y where X and Y are integers themselves] should follow
             if (numbers[1] == "0")
@@ -32,15 +32,15 @@ namespace Calc
             StringBuilder sb = new StringBuilder();
             int carry = 0, y = 0;
             var n = int.Parse(numbers[1]);
-            IList<int> number = smt.TransformStringtoReverseIntList(numbers[0]);
+            IList<int> number = smt.TransformStringtoReverseIntList(numbers[0], ProgramConsts.Instance.BlockSize);
             foreach (var bn in number)
             {
                 au.GetCarryBase10forSingleMultiple(ref carry, bn, n, ref y);
-                sb.Append(y);
+                sb.Append(smt.ReverseString(y.ToString().PadLeft(ProgramConsts.Instance.BlockSize, '0')));
             }
             if (carry != 0)
             {
-                sb.Append(carry);
+                sb.Append(smt.ReverseString(carry.ToString()));
             }
             return smt.ReverseString(sb.ToString());
         }

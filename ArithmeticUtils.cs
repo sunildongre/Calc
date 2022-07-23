@@ -14,7 +14,9 @@ namespace Calc
 
     public class ArithmeticUtils
     {
-        private static readonly Int32Pair[,,] table = new Int32Pair[10,10,10];
+        private static readonly Int32Pair[,,] table = new Int32Pair[(int)ProgramConsts.Instance.Base10BlockDigitCount,
+                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount,
+                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount];
 
         public ArithmeticUtils()
         {
@@ -46,17 +48,21 @@ namespace Calc
             y = pair.Opt;
         }
 
+
+        // build the lookup tables
+        // eventually move this out to a separate program
+        // import the mods for all combinations in code as static
         private static void fillMod10Table()
         {
-            for (var h = 0; h < 10; h++)
+            for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
             {
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
                 {
-                    for (var j = 0; j < 10; j++)
+                    for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
                     {
                         var mult = h + i * j;
-                        var val = mult % 10;
-                        table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / 10 };
+                        var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
+                        table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
                     }
                 }
             }
@@ -82,6 +88,26 @@ namespace Calc
             Parallel.ForEach(ix, (i, s, m) =>
             {
                 var res = new KeyValuePair<int, string>(i, lnm.Compute(new List<string>() {number, i.ToString()}));
+                lock (mLoc) { multiples.Add(res); }
+            });
+            return multiples;
+        }
+
+
+        public IDictionary<int, string> GetMultiples(string number, int tableLength)
+        {
+            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+            IDictionary<int, string> multiples = new Dictionary<int, string>();
+            var mLoc = new object();
+            //0 and 10 are included to speed up multiplication
+            // 1 - 9 to speed up division
+            IList<int> ix = new List<int>();
+            for (var i = 0; i < tableLength; i++)
+                ix.Add(i);
+
+            Parallel.ForEach(ix, (i, s, m) =>
+            {
+                var res = new KeyValuePair<int, string>(i, lnm.Compute(new List<string>() { number, i.ToString() }));
                 lock (mLoc) { multiples.Add(res); }
             });
             return multiples;

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ArithmeticUtils.cs" />
     <Compile Include="LargeToOneNumberMultiplier.cs" />
+    <Compile Include="ProgramConsts.cs" />
     <Compile Include="ProgramMessages.cs" />
     <Compile Include="ProgramEnums.cs" />
     <Compile Include="ProgramInputValidator.cs" />
@@ -67,9 +68,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\add.txt" />
     <Content Include="TestFiles\div.txt" />
     <Content Include="TestFiles\divtestmult.txt" />
     <Content Include="TestFiles\mult.txt" />
+    <Content Include="TestFiles\mult1.txt" />
     <Content Include="TestFiles\sub.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

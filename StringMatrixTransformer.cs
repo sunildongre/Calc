@@ -8,7 +8,36 @@ namespace Calc
 {
     public class StringMatrixTransformer
     {
-        public IList<IList<int>> TransformStringListToReversedIntMatrix(IList<string> lNums)
+        public IList<IList<int>> TransformStringListToReversedIntMatrix(IList<string> lNums, int blockSize = 1)
+        {
+            if(blockSize == 1)
+                return _TransformStringListToReversedIntMatrix(lNums);
+
+
+            IList<IList<int>> matrix = new List<IList<int>>();
+
+            for (int i = 0; i < lNums.Count; i++)
+            {
+                matrix.Add(TransformStringtoReverseIntList(lNums[i], blockSize));
+            }
+            return matrix;
+        }
+
+        public IList<int> TransformStringtoReverseIntList(string number, int blockSize)
+        {
+            List<int> row = new List<int>();
+
+            for (int i = number.Length; i > 0; i -= blockSize)
+            {
+                if (i - blockSize > 0)
+                    row.Add(int.Parse(number.Substring(i - blockSize, blockSize)));
+                else
+                    row.Add(int.Parse(number.Substring(0, blockSize + (i - blockSize))));
+            }
+            return row;
+        }
+
+        private IList<IList<int>> _TransformStringListToReversedIntMatrix(IList<string> lNums)
         {
             IList<IList<int>> matrix = new List<IList<int>>();
 
@@ -22,7 +51,6 @@ namespace Calc
         public IList<int> TransformStringtoReverseIntList(string number)
         {
             List<int> row = new List<int>();
-            StringBuilder sb = new StringBuilder();
 
             for (var j = number.Length - 1; j >= 0; j--)
             {
