@@ -12,8 +12,9 @@ namespace Calc
         {
             StringMatrixTransformer smt = new StringMatrixTransformer();
             ArithmeticUtils au = new ArithmeticUtils();
-            var dt = DateTime.Now;  
-            IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
+            var dt = DateTime.Now;
+            //IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
+            IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers);
             CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed int arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
 
             int lMax = 0, carry = 0;

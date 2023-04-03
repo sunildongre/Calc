@@ -21,7 +21,7 @@ namespace Calc
             ArithmeticUtils au = new ArithmeticUtils();
 
             var num = numbers[0];
-            var dict = au.GetMultiples(num, 100);
+            var dict = au.GetMultiples(num, ProgramConsts.Instance.Base10BlockDigitCount);
             CalcLogger.Instance.DebugConsoleLogLine("Build Multiples completed in: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
             dt = DateTime.Now;
             // hack to speed up multiplication and division

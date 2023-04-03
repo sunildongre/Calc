@@ -13,13 +13,8 @@ namespace Calc
             if(blockSize == 1)
                 return _TransformStringListToReversedIntMatrix(lNums);
 
-
             IList<IList<int>> matrix = new List<IList<int>>();
-
-            for (int i = 0; i < lNums.Count; i++)
-            {
-                matrix.Add(TransformStringtoReverseIntList(lNums[i], blockSize));
-            }
+            Parallel.ForEach(lNums, ln => matrix.Add(TransformStringtoReverseIntList(ln, blockSize)));
             return matrix;
         }
 
@@ -41,10 +36,8 @@ namespace Calc
         {
             IList<IList<int>> matrix = new List<IList<int>>();
 
-            for (int i = 0; i < lNums.Count; i++)
-            {
-                matrix.Add(TransformStringtoReverseIntList(lNums[i]));
-            }
+            Parallel.ForEach(lNums, ln => matrix.Add(TransformStringtoReverseIntList(ln)));
+
             return matrix;
         }
 
