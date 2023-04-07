@@ -76,6 +76,12 @@ namespace Calc
             carry = (number - opt) / 10;
         }
 
+        public void GetCarryBaseBlock(ref int number, ref int opt, ref int carry, int block)
+        {
+            opt = number % block;
+            carry = (number - opt) / block;
+        }
+
         public IDictionary<int, string> GetMultiples(string number)
         {
             LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();

@@ -12,9 +12,18 @@ namespace Calc
         {
             if(blockSize == 1)
                 return _TransformStringListToReversedIntMatrix(lNums);
-
+            
+            Object obj = new Object();
             IList<IList<int>> matrix = new List<IList<int>>();
-            Parallel.ForEach(lNums, ln => matrix.Add(TransformStringtoReverseIntList(ln, blockSize)));
+
+            Parallel.ForEach(lNums, ln => {
+                var val = TransformStringtoReverseIntList(ln, blockSize);
+                lock (obj)
+                {
+                    matrix.Add(val);
+                }                
+            });
+            
             return matrix;
         }
 
@@ -35,8 +44,14 @@ namespace Calc
         private IList<IList<int>> _TransformStringListToReversedIntMatrix(IList<string> lNums)
         {
             IList<IList<int>> matrix = new List<IList<int>>();
-
-            Parallel.ForEach(lNums, ln => matrix.Add(TransformStringtoReverseIntList(ln)));
+            Object obj = new Object();
+            Parallel.ForEach(lNums, ln => {
+                var val = TransformStringtoReverseIntList(ln);
+                lock (obj)
+                {
+                    matrix.Add(val); 
+                }
+            });
 
             return matrix;
         }
@@ -70,6 +85,20 @@ namespace Calc
             for (var j = str.Length - 1; j >= 0;  j--)
             {
                 sb.Append(str[j]);
+            }
+            return sb.ToString();
+        }
+
+        public string ReverseString(string str, int blockSize)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = str.Length; i > 0; i -= blockSize)
+            {
+                if (i - blockSize > 0)
+                    sb.Append(str.Substring(i - blockSize, blockSize));
+                else
+                    sb.Append(str.Substring(0, blockSize + (i - blockSize)));
             }
             return sb.ToString();
         }
