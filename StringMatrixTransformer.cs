@@ -44,7 +44,7 @@ namespace Calc
         private IList<IList<int>> _TransformStringListToReversedIntMatrix(IList<string> lNums)
         {
             IList<IList<int>> matrix = new List<IList<int>>();
-            Object obj = new Object();
+            var obj = new Object();
             Parallel.ForEach(lNums, ln => {
                 var val = TransformStringtoReverseIntList(ln);
                 lock (obj)

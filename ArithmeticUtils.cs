@@ -18,9 +18,15 @@ namespace Calc
                                                                     (int)ProgramConsts.Instance.Base10BlockDigitCount,
                                                                     (int)ProgramConsts.Instance.Base10BlockDigitCount];
 
+        // attemptedusing lists, turns out it is slower than arrays :-) 
+        // no surprises there
+        // private static readonly IList<IList<IList<Int32Pair>>> lTable = new List<IList<IList<Int32Pair>>>();
+           
+
         public ArithmeticUtils()
         {
             fillMod10Table();
+            //fillMod10LTable();
         }
 
         #region get multipl and carry for a single number multiplication
@@ -44,6 +50,7 @@ namespace Calc
         public void GetCarryBase10forSingleMultiple(ref int carry, int bn, int n, ref int y)
         {
             var pair = table[carry, bn, n];
+            //var pair = lTable.ElementAt(carry).ElementAt(bn).ElementAt(n);
             carry = pair.Carry;
             y = pair.Opt;
         }
@@ -67,6 +74,27 @@ namespace Calc
                 }
             }
         }
+
+        //private static void fillMod10LTable()
+        //{
+        //    for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
+        //    {
+        //        IList<IList<Int32Pair>> d1 = new List<IList<Int32Pair>>();
+        //        for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
+        //        {
+        //            IList<Int32Pair> d2 = new List<Int32Pair>();
+        //            for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
+        //            {
+        //                var mult = h + i * j;
+        //                var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
+        //                var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
+        //                d2.Add(d3);
+        //            }
+        //            d1.Add(d2);
+        //        }
+        //        lTable.Add(d1);
+        //    }
+        //}
         #endregion
 
 
