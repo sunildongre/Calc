@@ -13,7 +13,7 @@ namespace Calc
             if(blockSize == 1)
                 return _TransformStringListToReversedIntMatrix(lNums);
             
-            Object obj = new Object();
+            var obj = new Object();
             IList<IList<int>> matrix = new List<IList<int>>();
 
             Parallel.ForEach(lNums, ln => {
@@ -31,7 +31,7 @@ namespace Calc
         {
             List<int> row = new List<int>();
 
-            for (int i = number.Length; i > 0; i -= blockSize)
+            for (var i = number.Length; i > 0; i -= blockSize)
             {
                 if (i - blockSize > 0)
                     row.Add(int.Parse(number.Substring(i - blockSize, blockSize)));
@@ -93,7 +93,7 @@ namespace Calc
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = str.Length; i > 0; i -= blockSize)
+            for (var i = str.Length; i > 0; i -= blockSize)
             {
                 if (i - blockSize > 0)
                     sb.Append(str.Substring(i - blockSize, blockSize));

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Calc
@@ -14,19 +15,33 @@ namespace Calc
 
     public class ArithmeticUtils
     {
-        private static readonly Int32Pair[,,] table = new Int32Pair[(int)ProgramConsts.Instance.Base10BlockDigitCount,
-                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount,
-                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount];
+        private static ArithmeticUtils _instance;
+        private static Int32Pair[,,] table = null;
+        private static Dictionary<string, Int32Pair> getCarryBase10BlockCarryDict = new Dictionary<string, Int32Pair>();
 
         // attemptedusing lists, turns out it is slower than arrays :-) 
         // no surprises there
-        // private static readonly IList<IList<IList<Int32Pair>>> lTable = new List<IList<IList<Int32Pair>>>();
+        private static readonly IList<IList<IList<Int32Pair>>> lTable = new List<IList<IList<Int32Pair>>>();
            
-
-        public ArithmeticUtils()
+        public static ArithmeticUtils Instance
         {
-            fillMod10Table();
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ArithmeticUtils();
+                }
+                return _instance;
+            }
+        }
+
+        private ArithmeticUtils()
+        {
+            var dt = DateTime.Now;
+            //fillMod10Table();
             //fillMod10LTable();
+
+            CalcLogger.Instance.DebugConsoleLogLine("Filling up carry look up table took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
         }
 
         #region get multipl and carry for a single number multiplication
@@ -47,54 +62,89 @@ namespace Calc
          * multiplication to get carry value and output value 
          * It is reduced to a lookup
          */
+
+        private static object loc = new object();
         public void GetCarryBase10forSingleMultiple(ref int carry, int bn, int n, ref int y)
         {
-            var pair = table[carry, bn, n];
-            //var pair = lTable.ElementAt(carry).ElementAt(bn).ElementAt(n);
-            carry = pair.Carry;
-            y = pair.Opt;
+            if (table != null)
+            {
+
+                var pair = table[carry, bn, n];
+                //var pair = lTable.ElementAt(carry).ElementAt(bn).ElementAt(n);
+
+                carry = pair.Carry;
+                y = pair.Opt;
+            }
+            else
+            {
+                var key = bn.ToString() + "_" + n.ToString() + "_" + carry.ToString();
+                Int32Pair c = null;
+                if (getCarryBase10BlockCarryDict.TryGetValue(key, out c))
+                {
+                    carry = c.Carry;
+                    y = c.Opt;
+                    return;
+                }
+
+                var val = (bn * n) + carry;
+                y = val % (int)ProgramConsts.Instance.Base10BlockDigitCount;
+                carry = val - y;
+
+                lock (loc)
+                {
+                    getCarryBase10BlockCarryDict.Add(key, new Int32Pair() { Carry = carry, Opt = y });
+                }
+            }
         }
 
 
         // build the lookup tables
         // eventually move this out to a separate program
         // import the mods for all combinations in code as static
-        private static void fillMod10Table()
+        private void fillMod10Table()
+        {
+            if (ProgramConsts.Instance.Base10BlockDigitCount <= 100)
+            {
+                table = new Int32Pair[(int)ProgramConsts.Instance.Base10BlockDigitCount,
+                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount,
+                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount];
+                for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
+                {
+                    for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
+                    {
+                        for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
+                        {
+                            var mult = h + i * j;
+                            var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
+                            table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
+                        }
+                    }
+                }
+            }
+            else
+                table = null;
+        }
+
+        private void fillMod10LTable()
         {
             for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
             {
+                IList<IList<Int32Pair>> d1 = new List<IList<Int32Pair>>();
                 for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
                 {
+                    IList<Int32Pair> d2 = new List<Int32Pair>();
                     for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
                     {
                         var mult = h + i * j;
                         var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
-                        table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
+                        var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
+                        d2.Add(d3);
                     }
+                    d1.Add(d2);
                 }
+                lTable.Add(d1);
             }
         }
-
-        //private static void fillMod10LTable()
-        //{
-        //    for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
-        //    {
-        //        IList<IList<Int32Pair>> d1 = new List<IList<Int32Pair>>();
-        //        for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
-        //        {
-        //            IList<Int32Pair> d2 = new List<Int32Pair>();
-        //            for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
-        //            {
-        //                var mult = h + i * j;
-        //                var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
-        //                var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
-        //                d2.Add(d3);
-        //            }
-        //            d1.Add(d2);
-        //        }
-        //        lTable.Add(d1);
-        //    }
-        //}
         #endregion
 
 

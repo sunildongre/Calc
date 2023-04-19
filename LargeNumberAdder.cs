@@ -11,7 +11,7 @@ namespace Calc
         public string Compute(IList<string> numbers)
         {
             StringMatrixTransformer smt = new StringMatrixTransformer();
-            ArithmeticUtils au = new ArithmeticUtils();
+            ArithmeticUtils au = ArithmeticUtils.Instance;
             var dt = DateTime.Now;
             IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
 
@@ -32,50 +32,57 @@ namespace Calc
             int carry_block = (int)Math.Pow(10, ProgramConsts.Instance.BlockSize);
             int padding_block = (int)Math.Pow(10, ProgramConsts.Instance.BlockSize - 1);
 
-            for (var i = 0; i < lMax; i++)
+            if (1 == 1)
             {
-                var x = carry;
-                carry = 0;
-                foreach (List<int> l in matrix)
+
+
+                for (var i = 0; i < lMax; i++)
                 {
-                    x += l.ElementAtOrDefault(i);
+                    var x = carry;
+                    carry = 0;
+                    foreach (List<int> l in matrix)
+                    {
+                        x += l.ElementAtOrDefault(i);
+                    }
+                    var y = 0;
+                    au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
+                    //while (y < padding_block)
+                    //{
+                    //    sb.Append('0');
+                    //}
+                    if (y < padding_block)
+                        sb.Append('0');
+
+                    sb.Append(y);
                 }
-                var y = 0;
-                au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
-                //while (y < padding_block)
-                //{
-                //    sb.Append('0');
-                //}
-                if (y < padding_block)
-                    sb.Append('0');
-
-                sb.Append(y);
             }
+            else
+            {
 
-            /*
-             * Following code works but seems to give incorrect answers for block_size 3 
-             * Also performance regression...!
-             * move it out to a different method
-             */
-            //List<int> pos_total = new List<int>(new int[lMax]);
-            //Parallel.ForEach(pos_total, (l, s, i) =>
-            //{
-            //    foreach (List<int> lst in matrix)
-            //        pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
-            //});
-            //
-            //var y = 0;
-            //pos_total.ForEach(x =>
-            //{
-            //    x += carry;
-            //    au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
-            //    if (y < padding_block)
-            //        sb.Append('0');
-            //
-            //    sb.Append(y);
-            //});
+                /*
+                 * Following code works but seems to give incorrect answers for block_size 3 
+                 * Also performance regression...!
+                 * move it out to a different method
+                 */
+                List<int> pos_total = new List<int>(new int[lMax]);
+                Parallel.ForEach(pos_total, (l, s, i) =>
+                {
+                    foreach (List<int> lst in matrix)
+                        pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
+                });
 
+                var y = 0;
+                pos_total.ForEach(x =>
+                {
+                    x += carry;
+                    au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
+                    if (y < padding_block)
+                        sb.Append('0');
 
+                    sb.Append(y);
+                });
+
+            }
             if (carry != 0)
             {
                 sb.Append(carry);

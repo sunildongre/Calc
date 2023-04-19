@@ -18,7 +18,7 @@ namespace Calc
             var dt = DateTime.Now;
             StringMatrixTransformer smt = new StringMatrixTransformer();
             ILargeNumberComputer a = new LargeNumberAdder();
-            ArithmeticUtils au = new ArithmeticUtils();
+            ArithmeticUtils au = ArithmeticUtils.Instance;
 
             var num = numbers[0];
             var dict = au.GetMultiples(num, ProgramConsts.Instance.Base10BlockDigitCount);
@@ -41,7 +41,7 @@ namespace Calc
             List<int> m = matrix.ElementAt(1).ToList();
             IList<string> stageIntermediates = new List<string>();
             var zeroAppender = "";
-            for(int i = 0; i < ProgramConsts.Instance.BlockSize; i++)
+            for(var i = 0; i < ProgramConsts.Instance.BlockSize; i++)
                 zeroAppender += "0";
 
             var p = "";

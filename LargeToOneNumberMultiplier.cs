@@ -9,7 +9,7 @@ namespace Calc
     public class LargeToOneNumberMultiplier : ILargeNumberComputer
     {
         static readonly StringMatrixTransformer smt = new StringMatrixTransformer();
-        static readonly ArithmeticUtils au = new ArithmeticUtils();
+        static readonly ArithmeticUtils au = ArithmeticUtils.Instance;
         
 
         public string Compute(IList<string> numbers)

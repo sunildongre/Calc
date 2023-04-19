@@ -16,7 +16,7 @@ namespace Calc
             }
 
             // need a fast input parser
-            ArithmeticUtils au = new ArithmeticUtils();
+            ArithmeticUtils au = ArithmeticUtils.Instance;
             // this will filter the operating mode and will be used by the Program IO handler when it is invoked
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);
 

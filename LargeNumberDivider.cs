@@ -10,7 +10,7 @@ namespace Calc
         private bool _decemalInQuotient = false;
         private IDictionary<int, string> multiples = new Dictionary<int, string>();
         NumercStringUtils nsu = new NumercStringUtils();
-        ArithmeticUtils au = new ArithmeticUtils();
+        ArithmeticUtils au = ArithmeticUtils.Instance;
         int nPos = 0;
         string n, d, q;
 
