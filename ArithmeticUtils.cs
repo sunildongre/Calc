@@ -38,7 +38,7 @@ namespace Calc
         private ArithmeticUtils()
         {
             var dt = DateTime.Now;
-            //fillMod10Table();
+            fillMod10Table();
             //fillMod10LTable();
 
             CalcLogger.Instance.DebugConsoleLogLine("Filling up carry look up table took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
@@ -68,7 +68,6 @@ namespace Calc
         {
             if (table != null)
             {
-
                 var pair = table[carry, bn, n];
                 //var pair = lTable.ElementAt(carry).ElementAt(bn).ElementAt(n);
 
