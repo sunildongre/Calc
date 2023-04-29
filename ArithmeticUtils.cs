@@ -9,8 +9,8 @@ namespace Calc
 {
     public class Int32Pair
     {
-        public int Carry { get; set; }
-        public int Opt{get; set; }
+        public long Carry { get; set; }
+        public long Opt{get; set; }
     }
 
     public class ArithmeticUtils
@@ -47,7 +47,7 @@ namespace Calc
         #region get multipl and carry for a single number multiplication
         /* The original function was like GetCarryBase10 below 
          * 
-         *public void GetCarryBase10(ref int number, ref int opt, ref int carry)
+         *public void GetCarryBase10(ref long number, ref long opt, ref long carry)
           {
             opt = number % 10;
             carry = (number - opt) / 10;
@@ -64,7 +64,7 @@ namespace Calc
          */
 
         private static object loc = new object();
-        public void GetCarryBase10forSingleMultiple(ref int carry, int bn, int n, ref int y)
+        public void GetCarryBase10forSingleMultiple(ref long carry, long bn, long n, ref long y)
         {
             if (table != null)
             {
@@ -86,7 +86,7 @@ namespace Calc
                 }
 
                 var val = (bn * n) + carry;
-                y = val % (int)ProgramConsts.Instance.Base10BlockDigitCount;
+                y = val % (long)ProgramConsts.Instance.Base10BlockDigitCount;
                 carry = val - y;
 
                 lock (loc)
@@ -104,18 +104,18 @@ namespace Calc
         {
             if (ProgramConsts.Instance.Base10BlockDigitCount <= 100)
             {
-                table = new Int32Pair[(int)ProgramConsts.Instance.Base10BlockDigitCount,
-                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount,
-                                                                    (int)ProgramConsts.Instance.Base10BlockDigitCount];
-                for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
+                table = new Int32Pair[(long)ProgramConsts.Instance.Base10BlockDigitCount,
+                                                                    (long)ProgramConsts.Instance.Base10BlockDigitCount,
+                                                                    (long)ProgramConsts.Instance.Base10BlockDigitCount];
+                for (var h = 0; h < (long)ProgramConsts.Instance.Base10BlockDigitCount; h++)
                 {
-                    for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
+                    for (var i = 0; i < (long)ProgramConsts.Instance.Base10BlockDigitCount; i++)
                     {
-                        for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
+                        for (var j = 0; j < (long)ProgramConsts.Instance.Base10BlockDigitCount; j++)
                         {
                             var mult = h + i * j;
-                            var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
-                            table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
+                            var val = mult % (long)ProgramConsts.Instance.Base10BlockDigitCount;
+                            table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (long)ProgramConsts.Instance.Base10BlockDigitCount };
                         }
                     }
                 }
@@ -126,17 +126,17 @@ namespace Calc
 
         private void fillMod10LTable()
         {
-            for (var h = 0; h < (int)ProgramConsts.Instance.Base10BlockDigitCount; h++)
+            for (var h = 0; h < (long)ProgramConsts.Instance.Base10BlockDigitCount; h++)
             {
                 IList<IList<Int32Pair>> d1 = new List<IList<Int32Pair>>();
-                for (var i = 0; i < (int)ProgramConsts.Instance.Base10BlockDigitCount; i++)
+                for (var i = 0; i < (long)ProgramConsts.Instance.Base10BlockDigitCount; i++)
                 {
                     IList<Int32Pair> d2 = new List<Int32Pair>();
-                    for (var j = 0; j < (int)ProgramConsts.Instance.Base10BlockDigitCount; j++)
+                    for (var j = 0; j < (long)ProgramConsts.Instance.Base10BlockDigitCount; j++)
                     {
                         var mult = h + i * j;
-                        var val = mult % (int)ProgramConsts.Instance.Base10BlockDigitCount;
-                        var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / (int)ProgramConsts.Instance.Base10BlockDigitCount };
+                        var val = mult % (long)ProgramConsts.Instance.Base10BlockDigitCount;
+                        var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / (long)ProgramConsts.Instance.Base10BlockDigitCount };
                         d2.Add(d3);
                     }
                     d1.Add(d2);
@@ -147,50 +147,50 @@ namespace Calc
         #endregion
 
 
-        public void GetCarryBase10(ref int number, ref int opt, ref int carry)
+        public void GetCarryBase10(ref long number, ref long opt, ref long carry)
         {
             opt = number % 10;
             carry = (number - opt) / 10;
         }
 
-        public void GetCarryBaseBlock(ref int number, ref int opt, ref int carry, int block)
+        public void GetCarryBaseBlock(ref long number, ref long opt, ref long carry, int block)
         {
             opt = number % block;
             carry = (number - opt) / block;
         }
 
-        public IDictionary<int, string> GetMultiples(string number)
+        public IDictionary<long, string> GetMultiples(string number)
         {
             LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
-            IDictionary<int, string> multiples = new Dictionary<int, string>();
+            IDictionary<long, string> multiples = new Dictionary<long, string>();
             var mLoc = new object();
             //0 and 10 are included to speed up multiplication
             // 1 - 9 to speed up division
-            IList<int> ix = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  
+            IList<long> ix = new List<long>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  
 
             Parallel.ForEach(ix, (i, s, m) =>
             {
-                var res = new KeyValuePair<int, string>(i, lnm.Compute(new List<string>() {number, i.ToString()}));
+                var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() {number, i.ToString()}));
                 lock (mLoc) { multiples.Add(res); }
             });
             return multiples;
         }
 
 
-        public IDictionary<int, string> GetMultiples(string number, int tableLength)
+        public IDictionary<long, string> GetMultiples(string number, long tableLength)
         {
             LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
-            IDictionary<int, string> multiples = new Dictionary<int, string>();
+            IDictionary<long, string> multiples = new Dictionary<long, string>();
             var mLoc = new object();
             //0 and 10 are included to speed up multiplication
             // 1 - 9 to speed up division
-            IList<int> ix = new List<int>();
+            IList<long> ix = new List<long>();
             for (var i = 0; i < tableLength; i++)
                 ix.Add(i);
 
             Parallel.ForEach(ix, (i, s, m) =>
             {
-                var res = new KeyValuePair<int, string>(i, lnm.Compute(new List<string>() { number, i.ToString() }));
+                var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() { number, i.ToString() }));
                 lock (mLoc) { multiples.Add(res); }
             });
             return multiples;

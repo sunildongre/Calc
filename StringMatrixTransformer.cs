@@ -8,13 +8,13 @@ namespace Calc
 {
     public class StringMatrixTransformer
     {
-        public IList<IList<int>> TransformStringListToReversedIntMatrix(IList<string> lNums, int blockSize = 1)
+        public IList<IList<long>> TransformStringListToReversedIntMatrix(IList<string> lNums, int blockSize = 1)
         {
             if(blockSize == 1)
                 return _TransformStringListToReversedIntMatrix(lNums);
             
             var obj = new Object();
-            IList<IList<int>> matrix = new List<IList<int>>();
+            IList<IList<long>> matrix = new List<IList<long>>();
 
             Parallel.ForEach(lNums, ln => {
                 var val = TransformStringtoReverseIntList(ln, blockSize);
@@ -27,23 +27,23 @@ namespace Calc
             return matrix;
         }
 
-        public IList<int> TransformStringtoReverseIntList(string number, int blockSize)
+        public IList<long> TransformStringtoReverseIntList(string number, int blockSize)
         {
-            List<int> row = new List<int>();
+            List<long> row = new List<long>();
 
             for (var i = number.Length; i > 0; i -= blockSize)
             {
                 if (i - blockSize > 0)
-                    row.Add(int.Parse(number.Substring(i - blockSize, blockSize)));
+                    row.Add(long.Parse(number.Substring(i - blockSize, blockSize)));
                 else
-                    row.Add(int.Parse(number.Substring(0, blockSize + (i - blockSize))));
+                    row.Add(long.Parse(number.Substring(0, blockSize + (i - blockSize))));
             }
             return row;
         }
 
-        private IList<IList<int>> _TransformStringListToReversedIntMatrix(IList<string> lNums)
+        private IList<IList<long>> _TransformStringListToReversedIntMatrix(IList<string> lNums)
         {
-            IList<IList<int>> matrix = new List<IList<int>>();
+            IList<IList<long>> matrix = new List<IList<long>>();
             var obj = new Object();
             Parallel.ForEach(lNums, ln => {
                 var val = TransformStringtoReverseIntList(ln);
@@ -56,9 +56,9 @@ namespace Calc
             return matrix;
         }
 
-        public IList<int> TransformStringtoReverseIntList(string number)
+        public IList<long> TransformStringtoReverseIntList(string number)
         {
-            List<int> row = new List<int>();
+            List<long> row = new List<long>();
 
             for (var j = number.Length - 1; j >= 0; j--)
             {

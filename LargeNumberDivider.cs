@@ -8,7 +8,7 @@ namespace Calc
     public class LargeNumberDivider : ILargeNumberComputer
     {
         private bool _decemalInQuotient = false;
-        private IDictionary<int, string> multiples = new Dictionary<int, string>();
+        private IDictionary<long, string> multiples = new Dictionary<long, string>();
         NumercStringUtils nsu = new NumercStringUtils();
         ArithmeticUtils au = ArithmeticUtils.Instance;
         int nPos = 0;

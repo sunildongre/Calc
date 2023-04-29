@@ -36,9 +36,9 @@ namespace Calc
 
             // and if nothing matches then the brute force method follows
 
-            IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
+            IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
 
-            List<int> m = matrix.ElementAt(1).ToList();
+            List<long> m = matrix.ElementAt(1).ToList();
             IList<string> stageIntermediates = new List<string>();
             var zeroAppender = "";
             for(var i = 0; i < ProgramConsts.Instance.BlockSize; i++)

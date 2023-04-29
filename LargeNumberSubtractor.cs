@@ -19,7 +19,7 @@ namespace Calc
             NumercStringUtils nsu = new NumercStringUtils();
 
             bool negateAnswer = ReorderLargerFirst(ref numbers);
-            IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers);
+            IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers);
 
             StringBuilder sb = new StringBuilder();
 
@@ -43,7 +43,7 @@ namespace Calc
                     smt.ReverseString(sb.ToString()));
         }
 
-        private void SetupCarryAt(IList<int> m, int i)
+        private void SetupCarryAt(IList<long> m, int i)
         {
             if (m[i + 1] <= 0)
                 SetupCarryAt(m, i + 1);

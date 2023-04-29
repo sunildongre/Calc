@@ -13,18 +13,18 @@ namespace Calc
             StringMatrixTransformer smt = new StringMatrixTransformer();
             ArithmeticUtils au = ArithmeticUtils.Instance;
             var dt = DateTime.Now;
-            IList<IList<int>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.AdditionBlockSize);
+            IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.AdditionBlockSize);
 
             if (numbers.Count != matrix.Count)
                 throw new Exception("output reversed strings less than input");
 
             
-            CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed int arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
+            CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed long arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
 
-            int lMax = 0, carry = 0;
+            long lMax = 0, carry = 0;
             StringBuilder sb = new StringBuilder();
 
-            foreach (List<int> l in matrix)
+            foreach (List<long> l in matrix)
             {
                 lMax = lMax < l.Count ? l.Count : lMax;
             }
@@ -38,11 +38,11 @@ namespace Calc
                 {
                     var x = carry;
                     carry = 0;
-                    foreach (List<int> l in matrix)
+                    foreach (List<long> l in matrix)
                     {
                         x += l.ElementAtOrDefault(i);
                     }
-                    var y = 0;
+                    long y = 0;
                     au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
                     sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
                 }
@@ -54,14 +54,14 @@ namespace Calc
                  * Also performance regression...!
                  * move it out to a different method
                  */
-                List<int> pos_total = new List<int>(new int[lMax]);
+                List<long> pos_total = new List<long>(new long[lMax]);
                 Parallel.ForEach(pos_total, (l, s, i) =>
                 {
-                    foreach (List<int> lst in matrix)
+                    foreach (List<long> lst in matrix)
                         pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
                 });
 
-                var y = 0;
+                long y = 0;
                 pos_total.ForEach(x =>
                 {
                     x += carry;

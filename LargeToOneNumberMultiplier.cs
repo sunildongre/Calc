@@ -30,9 +30,9 @@ namespace Calc
                 return numbers[0] + "0";
 
             StringBuilder sb = new StringBuilder();
-            int carry = 0, y = 0;
-            var n = int.Parse(numbers[1]);
-            IList<int> number = smt.TransformStringtoReverseIntList(numbers[0], ProgramConsts.Instance.BlockSize);
+            long carry = 0, y = 0;
+            var n = long.Parse(numbers[1]);
+            IList<long> number = smt.TransformStringtoReverseIntList(numbers[0], ProgramConsts.Instance.BlockSize);
             foreach (var bn in number)
             {
                 au.GetCarryBase10forSingleMultiple(ref carry, bn, n, ref y);

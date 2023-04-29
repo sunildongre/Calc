@@ -28,11 +28,11 @@ namespace Calc
             {
                 string[] lines = File.ReadAllLines(args[1]);
                 List<string> arguments = new List<string>();
-                for (int i = 0; i < lines.Length; i++)
+                for (long i = 0; i < lines.Length; i++)
                 {
                     string[] fragments = lines[i].Split(' ');
 
-                    for (int j = 0; j < fragments.Length; j++)
+                    for (long j = 0; j < fragments.Length; j++)
                         if (fragments[j].Length > 0 && !fragments[j].Contains(answerPrefix))
                             arguments.Add(fragments[j]);
                         else

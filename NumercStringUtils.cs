@@ -7,7 +7,7 @@ namespace Calc
         public bool IsStringNumeric(string str)
         {
             var arr = str.ToCharArray();
-            for(int i = 0; i < arr.Length; i++)
+            for(long i = 0; i < arr.Length; i++)
             {
                 if (!(arr[i] >= '0' && arr[i] <= '9'))
                     return false;
@@ -86,7 +86,7 @@ namespace Calc
                 {
                     var oArr = o.ToCharArray();
                     var tArr = t.ToCharArray();
-                    for (int i = 0; i < oArr.Length; i++)
+                    for (long i = 0; i < oArr.Length; i++)
                     {
                         if (oArr[i] > tArr[i])
                         {
@@ -114,12 +114,12 @@ namespace Calc
             return OneGreaterThanTwo(one, two) ? true : one.Equals(two);
         }
 
-        public IList<string> GetMultiples(string number, int multiples)
+        public IList<string> GetMultiples(string number, long multiples)
         {
             LargeNumberMultiplier lm = new LargeNumberMultiplier();
             IList<string> results = new List<string>();
 
-            for(int i = 1; i <= multiples; i++)
+            for(long i = 1; i <= multiples; i++)
             {
                 results.Add(lm.Compute(new List<string>() { number, i.ToString() }));
             }
