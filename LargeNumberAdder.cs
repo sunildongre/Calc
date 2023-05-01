@@ -43,8 +43,9 @@ namespace Calc
                         x += l.ElementAtOrDefault(i);
                     }
                     long y = 0;
-                    au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
+                    au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
                     sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
+                    //sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
                 }
             }
             else
@@ -65,20 +66,23 @@ namespace Calc
                 pos_total.ForEach(x =>
                 {
                     x += carry;
-                    au.GetCarryBaseBlock(ref x, ref y, ref carry, carry_block);
+                    au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
                     if (y < padding_block)
-                        sb.Append('0');
+                        sb.Insert(0,'0');
 
-                    sb.Append(y);
+                    //sb.Append(y);
+                    sb.Insert(0, y);
                 });
 
             }
             if (carry != 0)
             {
                 sb.Append(carry);
+                //sb.Insert(0, carry);
             }
 
             return smt.ReverseString(sb.ToString(), ProgramConsts.Instance.AdditionBlockSize);
+            //return sb.ToString().TrimStart('0');
         }
     }
 }

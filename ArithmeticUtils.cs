@@ -76,23 +76,23 @@ namespace Calc
             }
             else
             {
-                var key = bn.ToString() + "_" + n.ToString() + "_" + carry.ToString();
-                Int32Pair c = null;
-                if (getCarryBase10BlockCarryDict.TryGetValue(key, out c))
-                {
-                    carry = c.Carry;
-                    y = c.Opt;
-                    return;
-                }
+                //var key = bn.ToString() + "_" + n.ToString() + "_" + carry.ToString();
+                //Int32Pair c = null;
+                //if (getCarryBase10BlockCarryDict.TryGetValue(key, out c))
+                //{
+                //    carry = c.Carry;
+                //    y = c.Opt;
+                //    return;
+                //}
 
                 var val = (bn * n) + carry;
                 y = val % (long)ProgramConsts.Instance.Base10BlockDigitCount;
-                carry = val - y;
+                carry = (val - y)/(long)ProgramConsts.Instance.Base10BlockDigitCount;
 
-                lock (loc)
-                {
-                    getCarryBase10BlockCarryDict.Add(key, new Int32Pair() { Carry = carry, Opt = y });
-                }
+                //lock (loc)
+                //{
+                //    getCarryBase10BlockCarryDict.Add(key, new Int32Pair() { Carry = carry, Opt = y });
+                //}
             }
         }
 
@@ -124,6 +124,8 @@ namespace Calc
                 table = null;
         }
 
+        // with block size 3 this is hard to build since we need to calculate 10^9 combinations to start...!
+        // this is thousand times more than a block size 2 which is in absolute terms 10^6 
         private void fillMod10LTable()
         {
             for (var h = 0; h < (long)ProgramConsts.Instance.Base10BlockDigitCount; h++)
@@ -146,14 +148,7 @@ namespace Calc
         }
         #endregion
 
-
-        public void GetCarryBase10(ref long number, ref long opt, ref long carry)
-        {
-            opt = number % 10;
-            carry = (number - opt) / 10;
-        }
-
-        public void GetCarryBaseBlock(ref long number, ref long opt, ref long carry, int block)
+        public void GetCarryBaseBlock(long number, ref long opt, ref long carry, int block)
         {
             opt = number % block;
             carry = (number - opt) / block;
@@ -192,6 +187,24 @@ namespace Calc
             {
                 var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() { number, i.ToString() }));
                 lock (mLoc) { multiples.Add(res); }
+            });
+            return multiples;
+        }
+
+        public IList<string> GetMultiples(string number, int tableLength)
+        {
+            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+            IList<string> multiples = new List<string>(new string[tableLength]);
+            var mLoc = new object();
+            //0 and 10 are included to speed up multiplication
+            // 1 - 9 to speed up division
+            IList<int> ix = new List<int>();
+            for (var i = 0; i < tableLength; i++)
+                ix.Add(i);
+
+            Parallel.ForEach(ix, (i, s, m) =>
+            {
+                multiples[i] = lnm.Compute(new List<string>() { number, i.ToString() });
             });
             return multiples;
         }

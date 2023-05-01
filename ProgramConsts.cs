@@ -24,7 +24,7 @@ namespace Calc
 
         public int BlockSize => 2;
 
-        public int AdditionBlockSize => 2;
+        public int AdditionBlockSize => 8;
 
         public int Base10BlockDigitCount => (int)Math.Pow(10, BlockSize);
     }

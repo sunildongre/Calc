@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Calc
 {
@@ -24,16 +25,25 @@ namespace Calc
             var dict = au.GetMultiples(num, ProgramConsts.Instance.Base10BlockDigitCount);
             CalcLogger.Instance.DebugConsoleLogLine("Build Multiples completed in: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
             dt = DateTime.Now;
+
             // hack to speed up multiplication and division
             // ideally this should be replaced with pattern match (?1[0]+$) - I think
             // optimizations for patterns [multiples like: X00000... or X0000Y where X and Y are integers themselves] should follow
-            if (numbers[1] == "0")
-                return "0";
-            else if (numbers[1] == "1")
-                return numbers[0];
-            else if (numbers[1] == "10")
-                return numbers[0] + "0";
+            long pv = 0;
+            if (long.TryParse(numbers[1], out pv))
+            {
 
+                if (pv == 0)
+                    return "0";
+                else if (pv == 1)
+                    return numbers[0];
+                else if (pv == 10)
+                    return numbers[0] + "0";
+                else if (pv == 100)
+                    return numbers[0] + "00";
+                else if (pv == 1000)
+                    return numbers[0] + "000";
+            }
             // and if nothing matches then the brute force method follows
 
             IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
@@ -41,7 +51,7 @@ namespace Calc
             List<long> m = matrix.ElementAt(1).ToList();
             IList<string> stageIntermediates = new List<string>();
             var zeroAppender = "";
-            for(var i = 0; i < ProgramConsts.Instance.BlockSize; i++)
+            for (var i = 0; i < ProgramConsts.Instance.BlockSize; i++)
                 zeroAppender += "0";
 
             var p = "";
@@ -54,7 +64,7 @@ namespace Calc
                 while (p.Length < j * ProgramConsts.Instance.BlockSize)
                     p += zeroAppender;
 
-                stageIntermediates.Add(dict[mm] + p);
+                stageIntermediates.Add(dict[(int)mm] + p);
             }
             CalcLogger.Instance.DebugConsoleLogLine("Substituting Multiples for entire operand took: " + (DateTime.Now - dt).TotalMilliseconds);
             dt = DateTime.Now;

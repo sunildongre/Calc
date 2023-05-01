@@ -114,6 +114,7 @@ namespace Calc
             return OneGreaterThanTwo(one, two) ? true : one.Equals(two);
         }
 
+        // refactor to use Parallel.ForEach
         public IList<string> GetMultiples(string number, long multiples)
         {
             LargeNumberMultiplier lm = new LargeNumberMultiplier();
