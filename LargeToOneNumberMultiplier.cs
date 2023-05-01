@@ -44,9 +44,10 @@ namespace Calc
 
             foreach (var bn in number)
             {
-                var product = (bn * n) + carry;
-                y = product % ProgramConsts.Instance.Base10BlockDigitCount;
-                carry = (product - y) / ProgramConsts.Instance.Base10BlockDigitCount;
+                //var product = (bn * n) + carry;
+                //y = product % ProgramConsts.Instance.Base10BlockDigitCount;
+                //carry = (product - y) / ProgramConsts.Instance.Base10BlockDigitCount;
+                au.GetCarryBasseBlock2(ref carry, bn, n, ref y);
                 sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.BlockSize, '0'));
             }
             if (carry != 0)

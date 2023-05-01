@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -64,35 +65,21 @@ namespace Calc
          */
 
         private static object loc = new object();
-        public void GetCarryBase10forSingleMultiple(ref long carry, long bn, long n, ref long y)
+        //lookup for calculations involving block size 2 or 1 only
+        //else it will default to calculating the carry and output
+        public void GetCarryBasseBlock2(ref long carry, long bn, long n, ref long y)
         {
             if (table != null)
             {
                 var pair = table[carry, bn, n];
-                //var pair = lTable.ElementAt(carry).ElementAt(bn).ElementAt(n);
-
                 carry = pair.Carry;
                 y = pair.Opt;
             }
             else
             {
-                //var key = bn.ToString() + "_" + n.ToString() + "_" + carry.ToString();
-                //Int32Pair c = null;
-                //if (getCarryBase10BlockCarryDict.TryGetValue(key, out c))
-                //{
-                //    carry = c.Carry;
-                //    y = c.Opt;
-                //    return;
-                //}
-
                 var val = (bn * n) + carry;
                 y = val % (long)ProgramConsts.Instance.Base10BlockDigitCount;
                 carry = (val - y)/(long)ProgramConsts.Instance.Base10BlockDigitCount;
-
-                //lock (loc)
-                //{
-                //    getCarryBase10BlockCarryDict.Add(key, new Int32Pair() { Carry = carry, Opt = y });
-                //}
             }
         }
 
