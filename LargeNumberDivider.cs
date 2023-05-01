@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 namespace Calc
 {
     public class LargeNumberDivider : ILargeNumberComputer
@@ -19,7 +16,7 @@ namespace Calc
             if (numbers.Count != 2)
             {
                 throw new Exception("Division needs 2 numbers. First divided by the Second. Numbers found:" + numbers.Count);
-            }            
+            }
 
             n = numbers[0];
             d = numbers[1];
@@ -41,11 +38,11 @@ namespace Calc
         {
             if (nPos >= n.Length)
                 return null;
-            if(remainder == null)
+            if (remainder == null)
             {
                 var n1 = n.Substring(0, d.Length);
-                
-                if(nsu.OneGreaterThanOrEqualToTwo(n1, d))
+
+                if (nsu.OneGreaterThanOrEqualToTwo(n1, d))
                 {
                     nPos = d.Length;
                     return n1;
@@ -58,7 +55,7 @@ namespace Calc
             }
             else
             {
-                if(nsu.OneGreaterThanTwo(remainder, d))
+                if (nsu.OneGreaterThanTwo(remainder, d))
                 {
                     throw new Exception("Remainder grater than denominator, you could have gone at least 1 better");
                 }
@@ -69,7 +66,7 @@ namespace Calc
                     {
                         remainder += n.Substring(nPos++, 1);
 
-                        if (dq) 
+                        if (dq)
                             q += "0";
 
                         dq = true;

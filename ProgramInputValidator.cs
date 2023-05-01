@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Calc
@@ -10,7 +9,10 @@ namespace Calc
 
         private static ProgramInputValidator _instance = null;
 
-        public RunMode Mode { get; set; }
+        public RunMode Mode
+        {
+            get; set;
+        }
 
         public static ProgramInputValidator Instance
         {

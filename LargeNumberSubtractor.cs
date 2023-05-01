@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Calc
 {
@@ -10,10 +8,10 @@ namespace Calc
     {
         public string Compute(IList<string> numbers)
         {
-            if(numbers.Count > 2)
+            if (numbers.Count > 2)
             {
                 throw new Exception("Incorrect count of numbers to subtract, expecting 2, found: " + numbers.Count.ToString());
-            }    
+            }
 
             StringMatrixTransformer smt = new StringMatrixTransformer();
             NumercStringUtils nsu = new NumercStringUtils();

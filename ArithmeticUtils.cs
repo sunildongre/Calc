@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Calc
 {
     public class Int32Pair
     {
-        public long Carry { get; set; }
-        public long Opt{get; set; }
+        public long Carry
+        {
+            get; set;
+        }
+        public long Opt
+        {
+            get; set;
+        }
     }
 
     public class ArithmeticUtils
@@ -23,7 +25,7 @@ namespace Calc
         // attemptedusing lists, turns out it is slower than arrays :-) 
         // no surprises there
         private static readonly IList<IList<IList<Int32Pair>>> lTable = new List<IList<IList<Int32Pair>>>();
-           
+
         public static ArithmeticUtils Instance
         {
             get
@@ -79,7 +81,7 @@ namespace Calc
             {
                 var val = (bn * n) + carry;
                 y = val % (long)ProgramConsts.Instance.Base10BlockDigitCount;
-                carry = (val - y)/(long)ProgramConsts.Instance.Base10BlockDigitCount;
+                carry = (val - y) / (long)ProgramConsts.Instance.Base10BlockDigitCount;
             }
         }
 
@@ -148,11 +150,11 @@ namespace Calc
             var mLoc = new object();
             //0 and 10 are included to speed up multiplication
             // 1 - 9 to speed up division
-            IList<long> ix = new List<long>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  
+            IList<long> ix = new List<long>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
             Parallel.ForEach(ix, (i, s, m) =>
             {
-                var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() {number, i.ToString()}));
+                var res = new KeyValuePair<long, string>(i, lnm.Compute(new List<string>() { number, i.ToString() }));
                 lock (mLoc) { multiples.Add(res); }
             });
             return multiples;

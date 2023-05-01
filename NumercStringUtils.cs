@@ -7,7 +7,7 @@ namespace Calc
         public bool IsStringNumeric(string str)
         {
             var arr = str.ToCharArray();
-            for(long i = 0; i < arr.Length; i++)
+            for (long i = 0; i < arr.Length; i++)
             {
                 if (!(arr[i] >= '0' && arr[i] <= '9'))
                     return false;
@@ -17,9 +17,9 @@ namespace Calc
 
         public bool IsZeroString(string str)
         {
-            for(int i = 0; i < str.Length; i++)
+            for (int i = 0; i < str.Length; i++)
             {
-                if(str[i] != '0')
+                if (str[i] != '0')
                     return false;
             }
             return true;
@@ -40,11 +40,11 @@ namespace Calc
             if (i == 0)
             {
                 return str;
-            } 
-            else if(i == str.Length + 1)
+            }
+            else if (i == str.Length + 1)
             {
                 return "0";
-            } 
+            }
             else
             {
                 return str.Substring(i);
@@ -55,7 +55,7 @@ namespace Calc
         {
             var len = one.Length > two.Length ? two.Length : one.Length;
 
-            for(int i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 if (one[i] != two[i]) return false;
             }
@@ -120,7 +120,7 @@ namespace Calc
             LargeNumberMultiplier lm = new LargeNumberMultiplier();
             IList<string> results = new List<string>();
 
-            for(long i = 1; i <= multiples; i++)
+            for (long i = 1; i <= multiples; i++)
             {
                 results.Add(lm.Compute(new List<string>() { number, i.ToString() }));
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,20 +9,21 @@ namespace Calc
     {
         public IList<IList<long>> TransformStringListToReversedIntMatrix(IList<string> lNums, int blockSize = 1)
         {
-            if(blockSize == 1)
+            if (blockSize == 1)
                 return _TransformStringListToReversedIntMatrix(lNums);
-            
+
             var obj = new Object();
             IList<IList<long>> matrix = new List<IList<long>>();
 
-            Parallel.ForEach(lNums, ln => {
+            Parallel.ForEach(lNums, ln =>
+            {
                 var val = TransformStringtoReverseIntList(ln, blockSize);
                 lock (obj)
                 {
                     matrix.Add(val);
-                }                
+                }
             });
-            
+
             return matrix;
         }
 
@@ -45,11 +45,12 @@ namespace Calc
         {
             IList<IList<long>> matrix = new List<IList<long>>();
             var obj = new Object();
-            Parallel.ForEach(lNums, ln => {
+            Parallel.ForEach(lNums, ln =>
+            {
                 var val = TransformStringtoReverseIntList(ln);
                 lock (obj)
                 {
-                    matrix.Add(val); 
+                    matrix.Add(val);
                 }
             });
 
@@ -82,7 +83,7 @@ namespace Calc
         public string ReverseString(string str)
         {
             StringBuilder sb = new StringBuilder();
-            for (var j = str.Length - 1; j >= 0;  j--)
+            for (var j = str.Length - 1; j >= 0; j--)
             {
                 sb.Append(str[j]);
             }

@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace Calc
+﻿namespace Calc
 {
     public class Program
     {
         static void Main(string[] args)
         {
             string[] arguments;
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 ProgramMessages.Instance.PrintHelpText();
                 System.Console.ReadKey();
@@ -21,7 +18,7 @@ namespace Calc
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);
 
             var num1 = arguments[0];
-            CalcLogger.Instance.DebugConsoleLogLine(num1); 
+            CalcLogger.Instance.DebugConsoleLogLine(num1);
             var num2 = arguments[2];
             CalcLogger.Instance.DebugConsoleLogLine(num2);
             var op = arguments[1].ToCharArray()[0];
@@ -35,8 +32,8 @@ namespace Calc
 
         private static string Run(string num1, string num2, char op)
         {
-            var numbers = new string[] { num1, num2};
-            switch(op)
+            var numbers = new string[] { num1, num2 };
+            switch (op)
             {
                 case 'a':
                 case '+':

@@ -18,7 +18,7 @@ namespace Calc
             if (numbers.Count != matrix.Count)
                 throw new Exception("output reversed strings less than input");
 
-            
+
             CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed long arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
 
             long lMax = 0, carry = 0;
@@ -68,7 +68,7 @@ namespace Calc
                     x += carry;
                     au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
                     if (y < padding_block)
-                        sb.Insert(0,'0');
+                        sb.Insert(0, '0');
 
                     //sb.Append(y);
                     sb.Insert(0, y);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Calc
@@ -9,7 +8,7 @@ namespace Calc
     public class LargeToOneNumberMultiplier : ILargeNumberComputer
     {
         static readonly StringMatrixTransformer smt = new StringMatrixTransformer();
-        static readonly ArithmeticUtils au = ArithmeticUtils.Instance;        
+        static readonly ArithmeticUtils au = ArithmeticUtils.Instance;
 
         public string Compute(IList<string> numbers)
         {
@@ -52,7 +51,7 @@ namespace Calc
             }
             if (carry != 0)
             {
-                sb.Insert(0,carry.ToString());
+                sb.Insert(0, carry.ToString());
             }
             return sb.ToString();
         }
