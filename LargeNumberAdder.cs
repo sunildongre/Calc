@@ -32,7 +32,7 @@ namespace Calc
             int carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
             int padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
 
-            if (1 == 1)
+            if (1 == 2)
             {
                 for (var i = 0; i < lMax; i++)
                 {
@@ -44,8 +44,8 @@ namespace Calc
                     }
                     long y = 0;
                     au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
-                    sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
-                    //sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
+                    //sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
+                    sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
                 }
             }
             else
@@ -77,12 +77,12 @@ namespace Calc
             }
             if (carry != 0)
             {
-                sb.Append(carry);
-                //sb.Insert(0, carry);
+                //sb.Append(carry);
+                sb.Insert(0, carry);
             }
 
-            return smt.ReverseString(sb.ToString(), ProgramConsts.Instance.AdditionBlockSize);
-            //return sb.ToString().TrimStart('0');
+            //return smt.ReverseString(sb.ToString(), ProgramConsts.Instance.AdditionBlockSize);
+            return sb.ToString().TrimStart('0');
         }
     }
 }
