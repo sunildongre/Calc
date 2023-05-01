@@ -32,7 +32,7 @@ namespace Calc
             int carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
             int padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
 
-            if (1 == 2)
+            if (1 == 1)
             {
                 for (var i = 0; i < lMax; i++)
                 {
