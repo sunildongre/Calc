@@ -32,7 +32,7 @@ namespace Calc
             int carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
             int padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
 
-            if (1 == 1)
+            if (1 == 2)
             {
                 for (var i = 0; i < lMax; i++)
                 {
@@ -51,11 +51,11 @@ namespace Calc
             else
             {
                 /*
-                 * Following code works but seems to give incorrect answers for block_size 3 
-                 * Also performance regression...!
+                 * Following code works 
+                 * performance regression...!
                  * move it out to a different method
                  */
-                List<long> pos_total = new List<long>(new long[lMax]);
+                var pos_total = new long[lMax];
                 Parallel.ForEach(pos_total, (l, s, i) =>
                 {
                     foreach (List<long> lst in matrix)
@@ -63,17 +63,17 @@ namespace Calc
                 });
 
                 long y = 0;
-                pos_total.ForEach(x =>
+                for (var i = 0; i < lMax; i++)
                 {
+                    var x = pos_total[i];
                     x += carry;
                     au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
                     if (y < padding_block)
-                        sb.Insert(0, '0');
+                        sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0')); //sb.Insert(0, '0');
+                    else
+                        sb.Insert(0, y);
 
-                    //sb.Append(y);
-                    sb.Insert(0, y);
-                });
-
+                }
             }
             if (carry != 0)
             {
@@ -81,7 +81,6 @@ namespace Calc
                 sb.Insert(0, carry);
             }
 
-            //return smt.ReverseString(sb.ToString(), ProgramConsts.Instance.AdditionBlockSize);
             return sb.ToString().TrimStart('0');
         }
     }

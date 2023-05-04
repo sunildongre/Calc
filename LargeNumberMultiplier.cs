@@ -44,6 +44,8 @@ namespace Calc
             // and if nothing matches then the brute force method follows
 
             IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.BlockSize);
+            //long[][] mtx = smt.TransformStringListToReversedIntArray(numbers, ProgramConsts.Instance.BlockSize);
+
 
             List<long> m = matrix.ElementAt(1).ToList();
             IList<string> stageIntermediates = new List<string>();
