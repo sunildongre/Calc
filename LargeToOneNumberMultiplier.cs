@@ -38,7 +38,7 @@ namespace Calc
 
             StringBuilder sb = new StringBuilder();
             long carry = 0, y = 0;
-            var n = long.Parse(numbers[1]);
+            var n = smt.StringTolong(numbers[1]);
             IList<long> number = smt.TransformStringtoReverseIntList(numbers[0], ProgramConsts.Instance.BlockSize);
 
             foreach (var bn in number)

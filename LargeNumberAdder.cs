@@ -8,11 +8,84 @@ namespace Calc
 {
     public class LargeNumberAdder : ILargeNumberComputer
     {
+        private readonly StringMatrixTransformer smt = new StringMatrixTransformer();
+        private readonly ArithmeticUtils au = ArithmeticUtils.Instance;
+        private readonly NumercStringUtils nsu = new NumercStringUtils();
+
         public string Compute(IList<string> numbers)
+        {
+            var dt = DateTime.Now;
+            var mtx = smt.TransformStringListToReversedIntArray(numbers, ProgramConsts.Instance.AdditionBlockSize);
+
+            if (numbers.Count != mtx.Count())
+                throw new Exception("output reversed strings less than input");
+
+
+            CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed long arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
+
+            long lMax = 0, carry = 0;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var l in mtx)
+            {
+                lMax = lMax < l.Count() ? l.Count() : lMax;
+            }
+
+            var carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
+            var padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
+
+            if (1 == 2)
+            {
+                for (var i = 0; i < lMax; i++)
+                {
+                    var x = carry;
+                    carry = 0;
+                    foreach (long[] l in mtx)
+                    {
+                        x += l.ElementAtOrDefault(i);
+                    }
+                    long y = 0;
+                    au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
+                    //sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
+                    sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
+                }
+            }
+            else
+            {
+                /*
+                 * Following code works 
+                 * performance regression...!
+                 * move it out to a different method
+                 */
+                var pos_total = new long[lMax];
+                Parallel.ForEach(pos_total, (l, s, i) =>
+                {
+                    foreach (long[] lst in mtx)
+                        pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
+                });
+
+                long y = 0;
+                for (var i = 0; i < lMax; i++)
+                {
+                    au.GetCarryBaseBlock(pos_total[i] + carry, ref y, ref carry, carry_block);
+                    //au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
+                    sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
+                }
+            }
+            if (carry != 0)
+            {
+                sb.Insert(0, carry);
+            }
+
+            return nsu.TrimLeadingZeros(sb.ToString());
+        }
+
+        public string Compute_list(IList<string> numbers)
         {
             StringMatrixTransformer smt = new StringMatrixTransformer();
             ArithmeticUtils au = ArithmeticUtils.Instance;
             var dt = DateTime.Now;
+
             IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.AdditionBlockSize);
 
             if (numbers.Count != matrix.Count)
@@ -44,7 +117,6 @@ namespace Calc
                     }
                     long y = 0;
                     au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
-                    //sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
                     sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
                 }
             }
@@ -69,7 +141,7 @@ namespace Calc
                     x += carry;
                     au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
                     if (y < padding_block)
-                        sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0')); //sb.Insert(0, '0');
+                        sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0')); 
                     else
                         sb.Insert(0, y);
 
@@ -81,7 +153,7 @@ namespace Calc
                 sb.Insert(0, carry);
             }
 
-            return sb.ToString().TrimStart('0');
+            return  nsu.TrimLeadingZeros(sb.ToString());
         }
     }
 }

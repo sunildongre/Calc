@@ -4,6 +4,7 @@ namespace Calc
 {
     public class NumercStringUtils
     {
+
         public bool IsStringNumeric(string str)
         {
             var arr = str.ToCharArray();

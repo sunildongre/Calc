@@ -19,6 +19,26 @@ namespace Calc
             return matrix;
         }
 
+        public long[] TransformStringtoReverseIntArray(string number, int blockSize)
+        {
+            var len = blockSize != 1 ? 
+                    number.Length % blockSize == 0 ? 
+                        (int)(number.Length / blockSize) : 
+                        (int)(number.Length / blockSize) + 1 : 
+                    number.Length;
+
+            var row = new long[len];
+            int pos = 0;
+            for (var i = number.Length; i > 0; i -= blockSize)
+            {
+                if (i - blockSize > 0)
+                    row[pos++] = StringTolong(number.Substring(i - blockSize, blockSize));
+                else
+                    row[pos++] = StringTolong(number.Substring(0, blockSize + (i - blockSize)));
+            }
+            return row;
+        }
+
         public IList<IList<long>> TransformStringListToReversedIntMatrix(IList<string> lNums, int blockSize = 1)
         {
             if (blockSize == 1)
@@ -39,21 +59,6 @@ namespace Calc
             return matrix;
         }
 
-        public long[] TransformStringtoReverseIntArray(string number, int blockSize)
-        {
-            var len = number.Length % 2 == 0 ? (int)(number.Length / blockSize) : (int)(number.Length / blockSize) + 1;
-            var row = new long[len];
-            int pos = 0;
-            for (var i = number.Length; i > 0; i -= blockSize)
-            {
-                if (i - blockSize > 0)
-                    row[pos++] = long.Parse(number.Substring(i - blockSize, blockSize));
-                else
-                    row[pos++] = long.Parse(number.Substring(0, blockSize + (i - blockSize)));
-            }
-            return row;
-        }
-
         public IList<long> TransformStringtoReverseIntList(string number, int blockSize)
         {
             List<long> row = new List<long>();
@@ -61,9 +66,9 @@ namespace Calc
             for (var i = number.Length; i > 0; i -= blockSize)
             {
                 if (i - blockSize > 0)
-                    row.Add(long.Parse(number.Substring(i - blockSize, blockSize)));
+                    row.Add(StringTolong(number.Substring(i - blockSize, blockSize)));
                 else
-                    row.Add(long.Parse(number.Substring(0, blockSize + (i - blockSize))));
+                    row.Add(StringTolong(number.Substring(0, blockSize + (i - blockSize))));
             }
             return row;
         }
@@ -129,6 +134,14 @@ namespace Calc
                     sb.Append(str.Substring(0, blockSize + (i - blockSize)));
             }
             return sb.ToString();
+        }
+
+        public long StringTolong(string s)
+        {
+            long y = 0;
+            for (var i = 0; i < s.Length; i++)
+                y = y * 10 + (s[i] - '0');
+            return y;
         }
     }
 }
