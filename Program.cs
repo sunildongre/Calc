@@ -33,25 +33,30 @@
         private static string Run(string num1, string num2, char op)
         {
             var numbers = new string[] { num1, num2 };
+            StringMatrixTransformer smt = new StringMatrixTransformer();
+            var nums = smt.TransformStringListToReversedIntArray(numbers, ProgramConsts.Instance.BlockSize);
+
             switch (op)
             {
                 case 'a':
                 case '+':
                     LargeNumberAdder a = new LargeNumberAdder();
-                    return a.Compute(numbers);
+                    //return a.Compute(numbers);
+                    smt.RealignBlockSizes(nums, 2, 8);
+                    return smt.TransformLongBlockArrayToString(a.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
                 case 's':
                 case '-':
                     LargeNumberSubtractor s = new LargeNumberSubtractor();
-                    return s.Compute(numbers);
+                    return smt.TransformLongBlockArrayToString(s.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
                 case 'x':
                 case 'm':
                 case '*':
                     LargeNumberMultiplier m = new LargeNumberMultiplier();
-                    return m.Compute(numbers);
+                    return smt.TransformLongBlockArrayToString(m.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
                 case '/':
                 case 'd':
                     LargeNumberDivider d = new LargeNumberDivider();
-                    return d.Compute(numbers);
+                    return smt.TransformLongBlockArrayToString(d.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
                 default:
                     ProgramMessages.Instance.PrintHelpText();
                     return "";

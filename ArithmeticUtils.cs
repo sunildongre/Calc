@@ -183,17 +183,40 @@ namespace Calc
         public IList<string> GetMultiples(string number, int tableLength)
         {
             LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+
             IList<string> multiples = new List<string>(new string[tableLength]);
-            var mLoc = new object();
+
             //0 and 10 are included to speed up multiplication
             // 1 - 9 to speed up division
             IList<int> ix = new List<int>();
+
             for (var i = 0; i < tableLength; i++)
                 ix.Add(i);
 
             Parallel.ForEach(ix, (i, s, m) =>
             {
                 multiples[i] = lnm.Compute(new List<string>() { number, i.ToString() });
+            });
+
+            return multiples;
+        }
+
+        public long[][] GetMultiples(long[] number, int tableLength)
+        {
+            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+
+            var multiples = new long[tableLength][];
+
+            //0 and 10 are included to speed up multiplication
+            // 1 - 9 to speed up division
+            IList<int> ix = new List<int>();
+
+            for (var i = 0; i < tableLength; i++)
+                ix.Add(i);
+
+            Parallel.ForEach(ix, (i, s, m) =>
+            {
+                multiples[i] = lnm.Compute(new long[2][]{ number, new long[] { i }});
             });
             return multiples;
         }
