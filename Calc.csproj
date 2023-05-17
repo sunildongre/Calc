@@ -86,7 +86,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy ..\..\..\TestFiles\*.* .\</PostBuildEvent>
+    <PostBuildEvent>copy ..\..\TestFiles\*.* .\</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

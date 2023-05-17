@@ -20,7 +20,6 @@ namespace Calc
     {
         private static ArithmeticUtils _instance;
         private static Int32Pair[,,] table = null;
-        private static Dictionary<string, Int32Pair> getCarryBase10BlockCarryDict = new Dictionary<string, Int32Pair>();
 
         // attemptedusing lists, turns out it is slower than arrays :-) 
         // no surprises there
@@ -66,7 +65,6 @@ namespace Calc
          * It is reduced to a lookup
          */
 
-        private static object loc = new object();
         //lookup for calculations involving block size 2 or 1 only
         //else it will default to calculating the carry and output
         public void GetCarryBasseBlock2(ref long carry, long bn, long n, ref long y)
@@ -91,25 +89,25 @@ namespace Calc
         // import the mods for all combinations in code as static
         private void fillMod10Table()
         {
-            if (ProgramConsts.Instance.Base10BlockDigitCount <= 100)
-            {
-                table = new Int32Pair[(long)ProgramConsts.Instance.Base10BlockDigitCount,
-                                                                    (long)ProgramConsts.Instance.Base10BlockDigitCount,
-                                                                    (long)ProgramConsts.Instance.Base10BlockDigitCount];
-                for (var h = 0; h < (long)ProgramConsts.Instance.Base10BlockDigitCount; h++)
-                {
-                    for (var i = 0; i < (long)ProgramConsts.Instance.Base10BlockDigitCount; i++)
-                    {
-                        for (var j = 0; j < (long)ProgramConsts.Instance.Base10BlockDigitCount; j++)
-                        {
-                            var mult = h + i * j;
-                            var val = mult % (long)ProgramConsts.Instance.Base10BlockDigitCount;
-                            table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (long)ProgramConsts.Instance.Base10BlockDigitCount };
-                        }
-                    }
-                }
-            }
-            else
+            //if (ProgramConsts.Instance.Base10BlockDigitCount <= 100)
+            //{
+            //    table = new Int32Pair[(long)ProgramConsts.Instance.Base10BlockDigitCount,
+            //                                                        (long)ProgramConsts.Instance.Base10BlockDigitCount,
+            //                                                        (long)ProgramConsts.Instance.Base10BlockDigitCount];
+            //    for (var h = 0; h < (long)ProgramConsts.Instance.Base10BlockDigitCount; h++)
+            //    {
+            //        for (var i = 0; i < (long)ProgramConsts.Instance.Base10BlockDigitCount; i++)
+            //        {
+            //            for (var j = 0; j < (long)ProgramConsts.Instance.Base10BlockDigitCount; j++)
+            //            {
+            //                var mult = h + i * j;
+            //                var val = mult % (long)ProgramConsts.Instance.Base10BlockDigitCount;
+            //                table[h, i, j] = new Int32Pair() { Opt = val, Carry = (mult - val) / (long)ProgramConsts.Instance.Base10BlockDigitCount };
+            //            }
+            //        }
+            //    }
+            //}
+            //else
                 table = null;
         }
 

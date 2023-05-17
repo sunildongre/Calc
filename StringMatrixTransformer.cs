@@ -14,16 +14,6 @@ namespace Calc
             foreach (long l in n)
                 sb.Insert(0, l.ToString().PadLeft(blockSize, '0'));
             return sb.ToString();
-
-
-            //IList<long> num = new List<long>(n);
-            //IList<string> snum = new List<string>();
-
-            //foreach (long l in num)
-            //{
-            //    snum.Add(l.ToString().PadLeft(blockSize, '0'));
-            //}
-
         }
 
         public long [][] TransformStringListToReversedIntArray(IList<string> lNums, int blockSize = 1)
@@ -167,16 +157,14 @@ namespace Calc
             var ret = new long[numbers.Length][];
             var ratio = (int)(newBlockSize / currentBlockSize);
 
-            var power_multiples = new int[] { 1, 100, 10000, 1000000, 100000000 };
+            var power_multiples = new long[10];
+            for (var i = 0; i < 5; i++)
+                power_multiples[i] = (long)Math.Pow(10, i * currentBlockSize);
 
             Parallel.ForEach(numbers, (i, j, k) => 
-            //for(var k = 0; k < numbers.Length; k++)
             {
-                //var i = numbers[k];
                 if (i != null)
                 {
-                    //var intermediate = TransformLongBlockArrayToString(i, currentBlockSize);
-                    //ret[k] = TransformStringtoReverseIntArray(intermediate, newBlockSize);
                     var r = new long[(int)(i.Length / ratio) + 1];
                     var rpos = 0;
                     for (var p = 0; p < i.Length; p += ratio)

@@ -11,7 +11,7 @@
                 System.Console.ReadKey();
                 return;
             }
-
+            var t1 = System.DateTime.Now;
             // need a fast input parser
             ArithmeticUtils au = ArithmeticUtils.Instance;
             // this will filter the operating mode and will be used by the Program IO handler when it is invoked
@@ -23,7 +23,7 @@
             CalcLogger.Instance.DebugConsoleLogLine(num2);
             var op = arguments[1].ToCharArray()[0];
 
-            var t1 = System.DateTime.Now;
+            
             ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op));
             var t2 = System.DateTime.Now;
             System.Console.WriteLine("Time taken to execute the calculation: {0}", t2 - t1);
@@ -41,7 +41,6 @@
                 case 'a':
                 case '+':
                     LargeNumberAdder a = new LargeNumberAdder();
-                    //return a.Compute(numbers);
                     smt.RealignBlockSizes(nums, 2, 8);
                     return smt.TransformLongBlockArrayToString(a.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
                 case 's':

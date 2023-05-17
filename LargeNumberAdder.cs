@@ -43,7 +43,7 @@ namespace Calc
             var pos_total = new long[lMax];
             Parallel.ForEach(pos_total, (l, s, i) =>
             {
-                foreach (long[] lst in mtx)
+                foreach (var lst in mtx)
                     pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
             });
 

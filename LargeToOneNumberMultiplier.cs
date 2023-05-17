@@ -55,29 +55,6 @@ namespace Calc
 
         public long[] Compute(long[][] numbers)
         {
-            //if (numbers.Count != 2)
-            //{
-            //    throw new Exception("Invalid number of arguments, 2 expected, found: " + numbers.Count);
-            //}
-
-            // hack to speed up multiplication and division
-            // ideally this should be replaced with pattern match (?1[0]+$) - I think
-            // optimizations for patterns [multiples like: X00000... or X0000Y where X and Y are integers themselves] should follow
-            //long pv = 0;
-            //if (long.TryParse(numbers[1], out pv))
-            //{
-            //    if (pv == 0)
-            //        return "0";
-            //    else if (pv == 1)
-            //        return numbers[0];
-            //    else if (pv == 10)
-            //        return numbers[0] + "0";
-            //    else if (pv == 100)
-            //        return numbers[0] + "00";
-            //    else if (pv == 1000)
-            //        return numbers[0] + "000";
-            //}
-
             long carry = 0, y = 0, i = 0 ;
             var n = numbers[1][0];
             var opt = new long[numbers[0].Length + 1];
