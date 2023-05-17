@@ -108,5 +108,10 @@ namespace Calc
 
             return q;
         }
+
+        public long[] Compute(long[][] numbers)
+        {
+            return null;
+        }
     }
 }

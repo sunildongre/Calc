@@ -34,44 +34,26 @@ namespace Calc
             var carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
             var padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
 
-            if (1 == 2)
-            {
-                for (var i = 0; i < lMax; i++)
-                {
-                    var x = carry;
-                    carry = 0;
-                    foreach (long[] l in mtx)
-                    {
-                        x += l.ElementAtOrDefault(i);
-                    }
-                    long y = 0;
-                    au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
-                    //sb.Append(y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
-                    sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
-                }
-            }
-            else
-            {
-                /*
-                 * Following code works 
-                 * performance regression...!
-                 * move it out to a different method
-                 */
-                var pos_total = new long[lMax];
-                Parallel.ForEach(pos_total, (l, s, i) =>
-                {
-                    foreach (long[] lst in mtx)
-                        pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
-                });
 
-                long y = 0;
-                for (var i = 0; i < lMax; i++)
-                {
-                    au.GetCarryBaseBlock(pos_total[i] + carry, ref y, ref carry, carry_block);
-                    //au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
-                    sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
-                }
+            /*
+             * Following code works 
+             * performance regression...!
+             * move it out to a different method
+             */
+            var pos_total = new long[lMax];
+            Parallel.ForEach(pos_total, (l, s, i) =>
+            {
+                foreach (var lst in mtx)
+                    pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
+            });
+
+            long y = 0;
+            for (var i = 0; i < lMax; i++)
+            {
+                au.GetCarryBaseBlock(pos_total[i] + carry, ref y, ref carry, carry_block);
+                sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
             }
+
             if (carry != 0)
             {
                 sb.Insert(0, carry);
@@ -80,80 +62,49 @@ namespace Calc
             return nsu.TrimLeadingZeros(sb.ToString());
         }
 
-        public string Compute_list(IList<string> numbers)
+        public long[] Compute(long[][] numbers)
         {
-            StringMatrixTransformer smt = new StringMatrixTransformer();
-            ArithmeticUtils au = ArithmeticUtils.Instance;
             var dt = DateTime.Now;
-
-            IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers, ProgramConsts.Instance.AdditionBlockSize);
-
-            if (numbers.Count != matrix.Count)
-                throw new Exception("output reversed strings less than input");
-
-
-            CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed long arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
+            var mtx = numbers;
 
             long lMax = 0, carry = 0;
             StringBuilder sb = new StringBuilder();
 
-            foreach (List<long> l in matrix)
+            foreach (var l in mtx)
             {
-                lMax = lMax < l.Count ? l.Count : lMax;
+                if (l == null) continue;
+                lMax = lMax < l.Count() ? l.Count() : lMax;
             }
 
-            int carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
-            int padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
+            var carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
+            var padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
 
-            if (1 == 2)
+            var pos_total = new long[lMax];
+            Parallel.ForEach(pos_total, (l, s, i) =>
             {
-                for (var i = 0; i < lMax; i++)
+                foreach (var lst in mtx)
                 {
-                    var x = carry;
-                    carry = 0;
-                    foreach (List<long> l in matrix)
+                    if (lst != null)
                     {
-                        x += l.ElementAtOrDefault(i);
-                    }
-                    long y = 0;
-                    au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
-                    sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0'));
-                }
-            }
-            else
-            {
-                /*
-                 * Following code works 
-                 * performance regression...!
-                 * move it out to a different method
-                 */
-                var pos_total = new long[lMax];
-                Parallel.ForEach(pos_total, (l, s, i) =>
-                {
-                    foreach (List<long> lst in matrix)
                         pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
-                });
-
-                long y = 0;
-                for (var i = 0; i < lMax; i++)
-                {
-                    var x = pos_total[i];
-                    x += carry;
-                    au.GetCarryBaseBlock(x, ref y, ref carry, carry_block);
-                    if (y < padding_block)
-                        sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.AdditionBlockSize, '0')); 
-                    else
-                        sb.Insert(0, y);
-
+                    }
                 }
+                
+            });
+
+            long y = 0;
+            IList<long> result = new List<long>();
+            for (var i = 0; i < lMax; i++)
+            {
+                au.GetCarryBaseBlock(pos_total[i] + carry, ref y, ref carry, carry_block);
+                result.Add(y);
             }
+
             if (carry != 0)
             {
-                //sb.Append(carry);
-                sb.Insert(0, carry);
+                result.Add(carry);
             }
-
-            return  nsu.TrimLeadingZeros(sb.ToString());
+            return result.ToArray();
         }
     }
 }

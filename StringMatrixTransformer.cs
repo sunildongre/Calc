@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -7,6 +8,13 @@ namespace Calc
 {
     public class StringMatrixTransformer
     {
+        public string TransformLongBlockArrayToString(long[] n, int blockSize)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (long l in n)
+                sb.Insert(0, l.ToString().PadLeft(blockSize, '0'));
+            return sb.ToString();
+        }
 
         public long [][] TransformStringListToReversedIntArray(IList<string> lNums, int blockSize = 1)
         {
@@ -142,6 +150,38 @@ namespace Calc
             for (var i = 0; i < s.Length; i++)
                 y = y * 10 + (s[i] - '0');
             return y;
+        }
+
+        public long[][] RealignBlockSizes(long[][] numbers, int currentBlockSize, int newBlockSize)
+        {
+            var ret = new long[numbers.Length][];
+            var ratio = (int)(newBlockSize / currentBlockSize);
+
+            var power_multiples = new long[10];
+            for (var i = 0; i < 5; i++)
+                power_multiples[i] = (long)Math.Pow(10, i * currentBlockSize);
+
+            Parallel.ForEach(numbers, (i, j, k) => 
+            {
+                if (i != null)
+                {
+                    var r = new long[(int)(i.Length / ratio) + 1];
+                    var rpos = 0;
+                    for (var p = 0; p < i.Length; p += ratio)
+                    {
+                        long no = 0;
+                        for (var q = 0; q < ratio && p + q < i.Length; q++)
+                        {
+                            no += i[p + q] * power_multiples[q];
+                        }
+                        r[rpos++] = no;
+                    }
+                    ret[k] = r;
+                }
+            }
+            );
+
+            return ret;
         }
     }
 }

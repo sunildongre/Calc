@@ -68,5 +68,10 @@ namespace Calc
             }
             return negateAnswer;
         }
+
+        public long[] Compute(long[][] numbers)
+        {
+            return null;
+        }
     }
 }
