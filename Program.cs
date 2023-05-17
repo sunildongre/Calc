@@ -1,4 +1,7 @@
-﻿namespace Calc
+﻿using Calc.Utils;
+using Calc.Calculators;
+
+namespace Calc
 {
     public class Program
     {

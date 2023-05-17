@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Calc.Interface;
+using Calc.Utils;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Calc
+namespace Calc.Calculators
 {
 
     public class LargeToOneNumberMultiplier : ILargeNumberComputer
@@ -36,10 +37,10 @@ namespace Calc
                     return numbers[0] + "000";
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             long carry = 0, y = 0;
             var n = smt.StringTolong(numbers[1]);
-            IList<long> number = smt.TransformStringtoReverseIntList(numbers[0], ProgramConsts.Instance.BlockSize);
+            var number = smt.TransformStringtoReverseIntList(numbers[0], ProgramConsts.Instance.BlockSize);
 
             foreach (var bn in number)
             {
@@ -55,11 +56,11 @@ namespace Calc
 
         public long[] Compute(long[][] numbers)
         {
-            long carry = 0, y = 0, i = 0 ;
+            long carry = 0, y = 0, i = 0;
             var n = numbers[1][0];
             var opt = new long[numbers[0].Length + 1];
 
-            for(; i < numbers[0].Length; i ++)
+            for (; i < numbers[0].Length; i++)
             {
                 au.GetCarryBasseBlock2(ref carry, numbers[0][i], n, ref y);
                 opt[i] = y;

@@ -1,4 +1,6 @@
-﻿namespace Calc.Properties
+﻿using Calc.DataTypes;
+
+namespace Calc.Properties
 {
     public class AtomicCalcParams
     {

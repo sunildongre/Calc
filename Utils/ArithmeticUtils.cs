@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Calc.Calculators;
+using Calc.DataTypes;
 
-namespace Calc
+namespace Calc.Utils
 {
-    public class Int32Pair
-    {
-        public long Carry
-        {
-            get; set;
-        }
-        public long Opt
-        {
-            get; set;
-        }
-    }
 
     public class ArithmeticUtils
     {
@@ -77,9 +68,9 @@ namespace Calc
             }
             else
             {
-                var val = (bn * n) + carry;
-                y = val % (long)ProgramConsts.Instance.Base10BlockDigitCount;
-                carry = (val - y) / (long)ProgramConsts.Instance.Base10BlockDigitCount;
+                var val = bn * n + carry;
+                y = val % ProgramConsts.Instance.Base10BlockDigitCount;
+                carry = (val - y) / ProgramConsts.Instance.Base10BlockDigitCount;
             }
         }
 
@@ -108,7 +99,7 @@ namespace Calc
             //    }
             //}
             //else
-                table = null;
+            table = null;
         }
 
         // with block size 3 this is hard to build since we need to calculate 10^9 combinations to start...!
@@ -125,7 +116,7 @@ namespace Calc
                     {
                         var mult = h + i * j;
                         var val = mult % (long)ProgramConsts.Instance.Base10BlockDigitCount;
-                        var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / (long)ProgramConsts.Instance.Base10BlockDigitCount };
+                        var d3 = new Int32Pair() { Opt = val, Carry = (mult - val) / ProgramConsts.Instance.Base10BlockDigitCount };
                         d2.Add(d3);
                     }
                     d1.Add(d2);
@@ -143,7 +134,7 @@ namespace Calc
 
         public IDictionary<long, string> GetMultiples(string number)
         {
-            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+            var lnm = new LargeToOneNumberMultiplier();
             IDictionary<long, string> multiples = new Dictionary<long, string>();
             var mLoc = new object();
             //0 and 10 are included to speed up multiplication
@@ -161,7 +152,7 @@ namespace Calc
 
         public IDictionary<long, string> GetMultiples(string number, long tableLength)
         {
-            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+            var lnm = new LargeToOneNumberMultiplier();
             IDictionary<long, string> multiples = new Dictionary<long, string>();
             var mLoc = new object();
             //0 and 10 are included to speed up multiplication
@@ -180,7 +171,7 @@ namespace Calc
 
         public IList<string> GetMultiples(string number, int tableLength)
         {
-            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+            var lnm = new LargeToOneNumberMultiplier();
 
             IList<string> multiples = new List<string>(new string[tableLength]);
 
@@ -201,7 +192,7 @@ namespace Calc
 
         public long[][] GetMultiples(long[] number, int tableLength)
         {
-            LargeToOneNumberMultiplier lnm = new LargeToOneNumberMultiplier();
+            var lnm = new LargeToOneNumberMultiplier();
 
             var multiples = new long[tableLength][];
 
@@ -214,7 +205,7 @@ namespace Calc
 
             Parallel.ForEach(ix, (i, s, m) =>
             {
-                multiples[i] = lnm.Compute(new long[2][]{ number, new long[] { i }});
+                multiples[i] = lnm.Compute(new long[2][] { number, new long[] { i } });
             });
             return multiples;
         }

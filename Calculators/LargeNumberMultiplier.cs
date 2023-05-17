@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Calc.Interface;
+using Calc.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Calc
+namespace Calc.Calculators
 {
     public partial class LargeNumberMultiplier : ILargeNumberComputer
     {
@@ -13,9 +15,9 @@ namespace Calc
                 throw new Exception("Need at least 2 numbers to multiply, found: " + numbers.Count + " ms");
             }
             var dt = DateTime.Now;
-            StringMatrixTransformer smt = new StringMatrixTransformer();
+            var smt = new StringMatrixTransformer();
             ILargeNumberComputer a = new LargeNumberAdder();
-            ArithmeticUtils au = ArithmeticUtils.Instance;
+            var au = ArithmeticUtils.Instance;
 
             var num = numbers[0];
             var dict = au.GetMultiples(num, ProgramConsts.Instance.Base10BlockDigitCount);
@@ -28,17 +30,16 @@ namespace Calc
             long pv = 0;
             if (long.TryParse(numbers[1], out pv))
             {
-
                 if (pv == 0)
                     return "0";
                 else if (pv == 1)
                     return numbers[0];
                 else if (pv == 10)
                     return numbers[0] + "0";
-                //else if (pv == 100)
-                //    return numbers[0] + "00";
-                //else if (pv == 1000)
-                //    return numbers[0] + "000";
+                else if (pv == 100)
+                    return numbers[0] + "00";
+                else if (pv == 1000)
+                    return numbers[0] + "000";
             }
             // and if nothing matches then the brute force method follows
 
@@ -75,9 +76,9 @@ namespace Calc
                 throw new Exception("Need at least 2 numbers to multiply, found: " + numbers.Count() + " ms");
             }
             var dt = DateTime.Now;
-            StringMatrixTransformer smt = new StringMatrixTransformer();
+            var smt = new StringMatrixTransformer();
             ILargeNumberComputer a = new LargeNumberAdder();
-            ArithmeticUtils au = ArithmeticUtils.Instance;
+            var au = ArithmeticUtils.Instance;
 
             var num = numbers[0];
             var dict = au.GetMultiples(num, ProgramConsts.Instance.Base10BlockDigitCount);
@@ -110,7 +111,7 @@ namespace Calc
              * that's how the length of the second dimention of the array is computed.
              */
             var w = m.Length + num.Length + 1;
-            var stageIntermediates = new long[m.Length][]; 
+            var stageIntermediates = new long[m.Length][];
 
 
             for (var j = 0; j < m.Count(); j++)
@@ -121,32 +122,32 @@ namespace Calc
 
                 var row = new long[dict[(int)mm].Length + j];
 
-                for(int i = 0, k = 0 ; i < dict[(int)mm].Length; i++, k++) 
+                for (int i = 0, k = 0; i < dict[(int)mm].Length; i++, k++)
                 {
-                    row[j+i] = dict[(int)mm][i];
+                    row[j + i] = dict[(int)mm][i];
                 }
                 stageIntermediates[j] = row;
             }
             CalcLogger.Instance.DebugConsoleLogLine("Substituting Multiples for entire operand took: " + (DateTime.Now - dt).TotalMilliseconds);
-            
+
             dt = DateTime.Now;
-            
+
             var resetValues = smt.RealignBlockSizes(stageIntermediates, ProgramConsts.Instance.BlockSize, ProgramConsts.Instance.AdditionBlockSize);
-            
-            CalcLogger.Instance.DebugConsoleLogLine("Realigning blocks form " + 
-                ProgramConsts.Instance.BlockSize + 
-                " to " + 
-                ProgramConsts.Instance.AdditionBlockSize +  
-                " took: " + 
-                (DateTime.Now - dt).TotalMilliseconds + 
+
+            CalcLogger.Instance.DebugConsoleLogLine("Realigning blocks form " +
+                ProgramConsts.Instance.BlockSize +
+                " to " +
+                ProgramConsts.Instance.AdditionBlockSize +
+                " took: " +
+                (DateTime.Now - dt).TotalMilliseconds +
                 " ms");
 
             dt = DateTime.Now;
-            
+
             num = a.Compute(resetValues);
-            
+
             CalcLogger.Instance.DebugConsoleLogLine("Adding up stage intermediaries took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
-            
+
             return num;
         }
     }

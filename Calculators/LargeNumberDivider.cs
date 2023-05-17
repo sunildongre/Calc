@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Calc.Interface;
+using Calc.Utils;
+using System;
 using System.Collections.Generic;
-namespace Calc
+
+namespace Calc.Calculators
 {
     public class LargeNumberDivider : ILargeNumberComputer
     {
@@ -79,7 +82,7 @@ namespace Calc
 
         private string DoDivision(string n, string d)
         {
-            NumercStringUtils nsu = new NumercStringUtils();
+            var nsu = new NumercStringUtils();
             ILargeNumberComputer sb = new LargeNumberSubtractor();
             var ni = GetNextDividendString(null);
             var remainder = "";

@@ -1,4 +1,4 @@
-﻿namespace Calc
+﻿namespace Calc.DataTypes
 {
     public enum RunMode
     {

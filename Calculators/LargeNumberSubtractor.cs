@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Calc.Interface;
 
-namespace Calc
+namespace Calc.Calculators
 {
     public class LargeNumberSubtractor : ILargeNumberComputer
     {
@@ -13,15 +14,15 @@ namespace Calc
                 throw new Exception("Incorrect count of numbers to subtract, expecting 2, found: " + numbers.Count.ToString());
             }
 
-            StringMatrixTransformer smt = new StringMatrixTransformer();
-            NumercStringUtils nsu = new NumercStringUtils();
+            var smt = new StringMatrixTransformer();
+            var nsu = new NumercStringUtils();
 
-            bool negateAnswer = ReorderLargerFirst(ref numbers);
-            IList<IList<long>> matrix = smt.TransformStringListToReversedIntMatrix(numbers);
+            var negateAnswer = ReorderLargerFirst(ref numbers);
+            var matrix = smt.TransformStringListToReversedIntMatrix(numbers);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            int i = 0;
+            var i = 0;
             for (; i < matrix[1].Count; i++)
             {
                 if (matrix[0][i] < matrix[1][i])
@@ -55,14 +56,14 @@ namespace Calc
 
         private bool ReorderLargerFirst(ref IList<string> numbers)
         {
-            bool negateAnswer = false;
-            NumercStringUtils nsu = new NumercStringUtils();
+            var negateAnswer = false;
+            var nsu = new NumercStringUtils();
             if (numbers[0].Length < numbers[1].Length ||
                 !nsu.OneGreaterThanTwo(numbers[0], numbers[1]))
             {
                 negateAnswer = true;
                 // swap
-                string t = numbers[0];
+                var t = numbers[0];
                 numbers[0] = numbers[1];
                 numbers[1] = t;
             }

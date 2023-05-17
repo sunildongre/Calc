@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Calc.Interface;
+using Calc.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calc
+namespace Calc.Calculators
 {
     public class LargeNumberAdder : ILargeNumberComputer
     {
@@ -24,7 +26,7 @@ namespace Calc
             CalcLogger.Instance.DebugConsoleLogLine("Transforming staged intermediaries into reversed long arrays took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
 
             long lMax = 0, carry = 0;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             foreach (var l in mtx)
             {
@@ -68,7 +70,7 @@ namespace Calc
             var mtx = numbers;
 
             long lMax = 0, carry = 0;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             foreach (var l in mtx)
             {
@@ -89,7 +91,7 @@ namespace Calc
                         pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
                     }
                 }
-                
+
             });
 
             long y = 0;
