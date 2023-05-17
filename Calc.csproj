@@ -73,7 +73,7 @@
   <ItemGroup>
     <Compile Include="Utils\ArithmeticUtils.cs" />
     <Compile Include="Calculators\LargeToOneNumberMultiplier.cs" />
-    <Compile Include="ProgramConsts.cs" />
+    <Compile Include="Analytics\ProgramConsts.cs" />
     <Compile Include="ProgramMessages.cs" />
     <Compile Include="DataTypes\ProgramEnums.cs" />
     <Compile Include="Utils\ProgramInputValidator.cs" />
