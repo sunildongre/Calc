@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Calc.DataTypes;
 
-namespace Calc
+namespace Calc.Utils
 {
     public class ProgramInputValidator
     {
@@ -52,9 +52,9 @@ namespace Calc
 
         private bool OrderValidator(string[] args)
         {
-            string num1 = args[0];
-            char[] operationArr = args[1].ToCharArray();
-            string num2 = args[2];
+            var num1 = args[0];
+            var operationArr = args[1].ToCharArray();
+            var num2 = args[2];
 
             if (operationArr.Length != 1 || !options.Contains(operationArr[0]))
             {
@@ -62,7 +62,7 @@ namespace Calc
                 return false;
             }
 
-            Regex rgx = new Regex("[+-]?[0-9]+");
+            var rgx = new Regex("[+-]?[0-9]+");
             if (!rgx.IsMatch(num1) || !rgx.IsMatch(num2))
             {
                 ProgramMessages.Instance.PrintOperandFormatIncorrect();
