@@ -37,6 +37,7 @@ namespace Calc
         {
             var numbers = new string[] { num1, num2 };
             StringMatrixTransformer smt = new StringMatrixTransformer();
+            NumercStringUtils nsu = new NumercStringUtils();
             var nums = smt.TransformStringListToReversedIntArray(numbers, ProgramConsts.Instance.BlockSize);
 
             switch (op)
@@ -45,20 +46,36 @@ namespace Calc
                 case '+':
                     LargeNumberAdder a = new LargeNumberAdder();
                     smt.RealignBlockSizes(nums, 2, 8);
-                    return smt.TransformLongBlockArrayToString(a.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
+                    return nsu.TrimLeadingZeros(
+                        smt.TransformLongBlockArrayToString(
+                            a.Compute(nums), 
+                            ProgramConsts.Instance.AdditionBlockSize)
+                        );
                 case 's':
                 case '-':
                     LargeNumberSubtractor s = new LargeNumberSubtractor();
-                    return smt.TransformLongBlockArrayToString(s.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
+                    return nsu.TrimLeadingZeros(
+                        smt.TransformLongBlockArrayToString(
+                            s.Compute(nums), 
+                            ProgramConsts.Instance.AdditionBlockSize)
+                        );
                 case 'x':
                 case 'm':
                 case '*':
                     LargeNumberMultiplier m = new LargeNumberMultiplier();
-                    return smt.TransformLongBlockArrayToString(m.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
+                    return nsu.TrimLeadingZeros(
+                        smt.TransformLongBlockArrayToString(
+                            m.Compute(nums), 
+                            ProgramConsts.Instance.AdditionBlockSize)
+                        );
                 case '/':
                 case 'd':
                     LargeNumberDivider d = new LargeNumberDivider();
-                    return smt.TransformLongBlockArrayToString(d.Compute(nums), ProgramConsts.Instance.AdditionBlockSize);
+                    return nsu.TrimLeadingZeros(
+                        smt.TransformLongBlockArrayToString(
+                            d.Compute(nums), 
+                            ProgramConsts.Instance.AdditionBlockSize)
+                        );
                 default:
                     ProgramMessages.Instance.PrintHelpText();
                     return "";

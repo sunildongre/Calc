@@ -126,13 +126,13 @@ namespace Calc.Utils
         }
         #endregion
 
-        public void GetCarryBaseBlock(long number, ref long opt, ref long carry, int block)
+        public void GetCarryBaseBlock(long number, ref long opt, ref long carry, long block)
         {
             opt = number % block;
             carry = (number - opt) / block;
         }
 
-        public IDictionary<long, string> GetMultiples(string number)
+        public IDictionary<long, string> Get11Multiples(string number)
         {
             var lnm = new LargeToOneNumberMultiplier();
             IDictionary<long, string> multiples = new Dictionary<long, string>();
@@ -192,6 +192,7 @@ namespace Calc.Utils
 
         public long[][] GetMultiples(long[] number, int tableLength)
         {
+            DateTime dt = DateTime.Now;
             var lnm = new LargeToOneNumberMultiplier();
 
             var multiples = new long[tableLength][];
@@ -207,7 +208,22 @@ namespace Calc.Utils
             {
                 multiples[i] = lnm.Compute(new long[2][] { number, new long[] { i } });
             });
+            CalcLogger.Instance.DebugConsoleLogLine("Build Multiples completed in: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
             return multiples;
+        }
+
+        //IDictionary<long, long[]> multiples = new Dictionary<long, long[]>();
+        long[][] multiples = new long[ProgramConsts.Instance.Base10BlockDigitCount][];
+        public long[] GetCachedMultiple(long[] number, long multiple)
+        {
+            var lnm = new LargeToOneNumberMultiplier();
+            long[] response = multiples[multiple];
+            if ( response == null)
+            {
+                response = lnm.Compute(new long[2][] { number, new long[] { multiple } });
+                multiples[multiple] = response;
+            }
+            return response;
         }
     }
 }

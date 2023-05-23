@@ -3,6 +3,7 @@ using Calc.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -78,8 +79,8 @@ namespace Calc.Calculators
                 lMax = lMax < l.Count() ? l.Count() : lMax;
             }
 
-            var carry_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
-            var padding_block = (int)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
+            var carry_block = (long)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize);
+            var padding_block = (long)Math.Pow(10, ProgramConsts.Instance.AdditionBlockSize - 1);
 
             var pos_total = new long[lMax];
             Parallel.ForEach(pos_total, (l, s, i) =>
@@ -88,7 +89,11 @@ namespace Calc.Calculators
                 {
                     if (lst != null)
                     {
-                        pos_total[(int)i] += lst.ElementAtOrDefault((int)i);
+                        pos_total[(int)i] = checked(pos_total[(int)i]+ lst.ElementAtOrDefault((int)i));
+                        //if (pos_total[(int)i].ToString().Length > ProgramConsts.Instance.AdditionBlockSize)
+                        //{
+                        //    CalcLogger.Instance.DebugConsoleLogLine("intermediate :" + pos_total[(int)i]);
+                        //}
                     }
                 }
 
@@ -106,6 +111,7 @@ namespace Calc.Calculators
             {
                 result.Add(carry);
             }
+            CalcLogger.Instance.DebugConsoleLogLine("Adding up results took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
             return result.ToArray();
         }
     }

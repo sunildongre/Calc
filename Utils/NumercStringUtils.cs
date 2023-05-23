@@ -117,16 +117,16 @@ namespace Calc
         }
 
         // refactor to use Parallel.ForEach
-        public IList<string> GetMultiples(string number, long multiples)
-        {
-            LargeNumberMultiplier lm = new LargeNumberMultiplier();
-            IList<string> results = new List<string>();
+        //public IList<string> GetMultiples(string number, long multiples)
+        //{
+        //    LargeNumberMultiplier lm = new LargeNumberMultiplier();
+        //    IList<string> results = new List<string>();
 
-            for (long i = 1; i <= multiples; i++)
-            {
-                results.Add(lm.Compute(new List<string>() { number, i.ToString() }));
-            }
-            return results;
-        }
+        //    for (long i = 1; i <= multiples; i++)
+        //    {
+        //        results.Add(lm.Compute(new List<string>() { number, i.ToString() }));
+        //    }
+        //    return results;
+        //}
     }
 }

@@ -30,13 +30,14 @@ namespace Calc
             Console.WriteLine("You may also put the expression in a file file and invoke it as:");
             Console.WriteLine("-f <filename>");
             Console.WriteLine("and operator is one of a/s/m/d where:");
-            Console.WriteLine("a -or- + : Addition");
-            Console.WriteLine("s -or- - : Subtractoin");
-            Console.WriteLine("m -or- x -or- *: Multiplication");
-            Console.WriteLine("d -or- / : Division");
+            Console.WriteLine("a   -or-   +         : Addition");
+            Console.WriteLine("s   -or-   -         : Subtractoin");
+            Console.WriteLine("m   -or-   x -or- *  : Multiplication");
+            Console.WriteLine("d   -or-   /         : Division");
+            Console.WriteLine("");
             Console.WriteLine("For example: Calc.exe 1234567890122546443 x 3659235987365457298");
-            Console.WriteLine("or : Calc.exe 1234567833546443 / 4928345298");
-            Console.WriteLine("or : Calc.exe -f multiply.txt");
+            Console.WriteLine("-or-       : Calc.exe 1234567833546443 / 4928345298");
+            Console.WriteLine("-or-       : Calc.exe -f multiply.txt");
             Console.WriteLine("where multiply.txt contains a string like 1234567833546443 * 4928345298");
         }
     }

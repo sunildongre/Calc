@@ -157,6 +157,9 @@ namespace Calc
             var ret = new long[numbers.Length][];
             var ratio = (int)(newBlockSize / currentBlockSize);
 
+            if (ratio == 1)
+                return numbers;
+
             var power_multiples = new long[10];
             for (var i = 0; i < 5; i++)
                 power_multiples[i] = (long)Math.Pow(10, i * currentBlockSize);

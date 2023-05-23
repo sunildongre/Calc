@@ -33,7 +33,7 @@ namespace Calc.Calculators
                 return "1";
 
             // assumption n > d 
-            multiples = au.GetMultiples(d);
+            multiples = au.Get11Multiples(d);
             return DoDivision(n, d);
         }
 

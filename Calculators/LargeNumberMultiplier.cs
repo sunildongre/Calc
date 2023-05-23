@@ -75,15 +75,13 @@ namespace Calc.Calculators
             {
                 throw new Exception("Need at least 2 numbers to multiply, found: " + numbers.Count() + " ms");
             }
-            var dt = DateTime.Now;
             var smt = new StringMatrixTransformer();
             ILargeNumberComputer a = new LargeNumberAdder();
             var au = ArithmeticUtils.Instance;
 
             var num = numbers[0];
-            var dict = au.GetMultiples(num, ProgramConsts.Instance.Base10BlockDigitCount);
-            CalcLogger.Instance.DebugConsoleLogLine("Build Multiples completed in: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
-            dt = DateTime.Now;
+
+            DateTime dt = DateTime.Now;
 
             var m = numbers[1];
 
@@ -120,11 +118,12 @@ namespace Calc.Calculators
 
                 if (mm == 0) continue;
 
-                var row = new long[dict[(int)mm].Length + j];
+                var result = au.GetCachedMultiple(num, mm);
+                var row = new long[result.Length + j];
 
-                for (int i = 0, k = 0; i < dict[(int)mm].Length; i++, k++)
+                for (int i = 0, k = 0; i < result.Length; i++, k++)
                 {
-                    row[j + i] = dict[(int)mm][i];
+                    row[j + i] = result[i];
                 }
                 stageIntermediates[j] = row;
             }
@@ -142,13 +141,7 @@ namespace Calc.Calculators
                 (DateTime.Now - dt).TotalMilliseconds +
                 " ms");
 
-            dt = DateTime.Now;
-
-            num = a.Compute(resetValues);
-
-            CalcLogger.Instance.DebugConsoleLogLine("Adding up stage intermediaries took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
-
-            return num;
+            return a.Compute(resetValues);
         }
     }
 }
