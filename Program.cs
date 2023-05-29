@@ -27,9 +27,9 @@ namespace Calc
             var op = arguments[1].ToCharArray()[0];
 
             
-            ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op));
+            ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op), t1);
             var t2 = System.DateTime.Now;
-            System.Console.WriteLine("Time taken to execute the calculation: {0}", t2 - t1);
+
             System.Console.ReadKey();
         }
 
@@ -39,7 +39,14 @@ namespace Calc
             StringMatrixTransformer smt = new StringMatrixTransformer();
             NumercStringUtils nsu = new NumercStringUtils();
             var nums = smt.TransformStringListToReversedIntArray(numbers, ProgramConsts.Instance.BlockSize);
-
+#if DEBUG
+            CalcLogger.Instance.DebugConsoleLogLine("General Block Size: " + ProgramConsts.Instance.BlockSize); 
+            CalcLogger.Instance.DebugConsoleLogLine("Addition Block Size: " + ProgramConsts.Instance.AdditionBlockSize);
+            CalcLogger.Instance.DebugConsoleLogLine("Input numbers arg1 Length: " + num1.Length);
+            CalcLogger.Instance.DebugConsoleLogLine("Converted Input arg1 Length: " + nums[0].Length);
+            CalcLogger.Instance.DebugConsoleLogLine("Input numbers arg2 Length: " + num2.Length);
+            CalcLogger.Instance.DebugConsoleLogLine("Converted Input arg2 Length: " + nums[1].Length);
+#endif
             switch (op)
             {
                 case 'a':

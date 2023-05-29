@@ -9,6 +9,7 @@ namespace Calc
         private StringBuilder sb;
 
         private string DEBUG = "DEBUG";
+        private string INFO = "INFO";
         private string TAB = "\t";
 
         private CalcLogger()
@@ -30,14 +31,23 @@ namespace Calc
 
         public void DebugConsoleLogLine(string str)
         {
-            var sb = ConstructLogStatement(str);
+#if DEBUG
+            var sb = ConstructLogStatement(str, DEBUG);
+            Console.WriteLine(sb.ToString());
+            sb.Clear();
+#endif
+        }
+
+        public void InfoConsoleLogLine(string str)
+        {
+            var sb = ConstructLogStatement(str, INFO);
             Console.WriteLine(sb.ToString());
             sb.Clear();
         }
 
-        private StringBuilder ConstructLogStatement(string str)
+        private StringBuilder ConstructLogStatement(string str, string level)
         {
-            sb.Append(DEBUG);
+            sb.Append(level);
             sb.Append(TAB);
             sb.Append(DateTime.Now.ToString());
             sb.Append(TAB);

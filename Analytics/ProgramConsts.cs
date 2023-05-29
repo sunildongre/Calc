@@ -18,7 +18,7 @@ namespace Calc
             }
         }
 
-        public int BlockSize => 2;
+        public int BlockSize => 5;
 
         public int AdditionBlockSize => 10;
 

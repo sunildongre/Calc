@@ -69,6 +69,8 @@ namespace Calc.Calculators
             CalcLogger.Instance.DebugConsoleLogLine("Adding up stage intermediaries took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
             return num;
         }
+
+
         public long[] Compute(long[][] numbers)
         {
             if (numbers.Count() < 2)
@@ -128,6 +130,7 @@ namespace Calc.Calculators
                 stageIntermediates[j] = row;
             }
             CalcLogger.Instance.DebugConsoleLogLine("Substituting Multiples for entire operand took: " + (DateTime.Now - dt).TotalMilliseconds);
+            CalcLogger.Instance.DebugConsoleLogLine("Number of distinct Multiples: " + au.Multiples.Count());
 
             dt = DateTime.Now;
 

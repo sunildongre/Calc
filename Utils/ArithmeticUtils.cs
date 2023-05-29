@@ -15,7 +15,7 @@ namespace Calc.Utils
         // attemptedusing lists, turns out it is slower than arrays :-) 
         // no surprises there
         private static readonly IList<IList<IList<Int32Pair>>> lTable = new List<IList<IList<Int32Pair>>>();
-
+        private static readonly int base10BlockDigCount = ProgramConsts.Instance.Base10BlockDigitCount;
         public static ArithmeticUtils Instance
         {
             get
@@ -30,11 +30,11 @@ namespace Calc.Utils
 
         private ArithmeticUtils()
         {
-            var dt = DateTime.Now;
-            fillMod10Table();
+            //var dt = DateTime.Now;
+            //fillMod10Table();
             //fillMod10LTable();
 
-            CalcLogger.Instance.DebugConsoleLogLine("Filling up carry look up table took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
+            //CalcLogger.Instance.DebugConsoleLogLine("Filling up carry look up table took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
         }
 
         #region get multipl and carry for a single number multiplication
@@ -58,20 +58,20 @@ namespace Calc.Utils
 
         //lookup for calculations involving block size 2 or 1 only
         //else it will default to calculating the carry and output
-        public void GetCarryBasseBlock2(ref long carry, long bn, long n, ref long y)
+        public void GetCarryBasseBlock(ref long carry, long bn, long n, ref long y)
         {
-            if (table != null)
-            {
-                var pair = table[carry, bn, n];
-                carry = pair.Carry;
-                y = pair.Opt;
-            }
-            else
-            {
+            //if (table != null)
+            //{
+            //    var pair = table[carry, bn, n];
+            //    carry = pair.Carry;
+            //    y = pair.Opt;
+            //}
+            //else
+            //{
                 var val = bn * n + carry;
-                y = val % ProgramConsts.Instance.Base10BlockDigitCount;
-                carry = (val - y) / ProgramConsts.Instance.Base10BlockDigitCount;
-            }
+                y = val % base10BlockDigCount;
+                carry = (val - y) / base10BlockDigCount;
+            //}
         }
 
 
@@ -213,15 +213,23 @@ namespace Calc.Utils
         }
 
         //IDictionary<long, long[]> multiples = new Dictionary<long, long[]>();
-        long[][] multiples = new long[ProgramConsts.Instance.Base10BlockDigitCount][];
+        private long[][] _multiples = new long[ProgramConsts.Instance.Base10BlockDigitCount][];
+
+        public long[][] Multiples
+        {
+            get
+            {
+                return _multiples; 
+            } 
+        }  
         public long[] GetCachedMultiple(long[] number, long multiple)
         {
             var lnm = new LargeToOneNumberMultiplier();
-            long[] response = multiples[multiple];
+            long[] response = _multiples[multiple];
             if ( response == null)
             {
                 response = lnm.Compute(new long[2][] { number, new long[] { multiple } });
-                multiples[multiple] = response;
+                _multiples[multiple] = response;
             }
             return response;
         }

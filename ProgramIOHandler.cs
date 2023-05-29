@@ -50,7 +50,7 @@ namespace Calc
         }
 
 
-        public void HandleOutput(string[] args, string result)
+        public void HandleOutput(string[] args, string result, DateTime t1)
         {
             result = answerPrefix + result;
             CalcLogger.Instance.DebugConsoleLogLine(result);
@@ -61,7 +61,7 @@ namespace Calc
                 {
                     sw.WriteLine(string.Empty);
                     sw.WriteLine(result);
-                    CalcLogger.Instance.DebugConsoleLogLine("Results Flushed to file..!");
+                    CalcLogger.Instance.InfoConsoleLogLine("Results calculated in: " + (DateTime.Now - t1).ToString() + " Flushed to file..!");
                 }
             }
         }

@@ -44,7 +44,7 @@ namespace Calc.Calculators
 
             foreach (var bn in number)
             {
-                au.GetCarryBasseBlock2(ref carry, bn, n, ref y);
+                au.GetCarryBasseBlock(ref carry, bn, n, ref y);
                 sb.Insert(0, y.ToString().PadLeft(ProgramConsts.Instance.BlockSize, '0'));
             }
             if (carry != 0)
@@ -62,7 +62,7 @@ namespace Calc.Calculators
 
             for (; i < numbers[0].Length; i++)
             {
-                au.GetCarryBasseBlock2(ref carry, numbers[0][i], n, ref y);
+                au.GetCarryBasseBlock(ref carry, numbers[0][i], n, ref y);
                 opt[i] = y;
             }
             if (carry != 0)
