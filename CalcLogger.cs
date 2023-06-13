@@ -31,11 +31,11 @@ namespace Calc
 
         public void DebugConsoleLogLine(string str)
         {
-#if DEBUG
+//#if DEBUG
             var sb = ConstructLogStatement(str, DEBUG);
             Console.WriteLine(sb.ToString());
             sb.Clear();
-#endif
+//#endif
         }
 
         public void InfoConsoleLogLine(string str)
@@ -51,9 +51,6 @@ namespace Calc
             sb.Append(TAB);
             sb.Append(DateTime.Now.ToString());
             sb.Append(TAB);
-            sb.Append("[");
-            sb.Append(str.Length.ToString());
-            sb.Append("]");
             sb.Append(TAB);
             sb.Append(str);
             return sb;

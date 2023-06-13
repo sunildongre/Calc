@@ -5,7 +5,7 @@ namespace Calc
 {
     public class NumercStringUtils
     {
-
+        #region string representation of number
         public bool IsStringNumeric(string str)
         {
             var arr = str.ToCharArray();
@@ -116,17 +116,103 @@ namespace Calc
             return OneGreaterThanTwo(one, two) ? true : one.Equals(two);
         }
 
-        // refactor to use Parallel.ForEach
-        //public IList<string> GetMultiples(string number, long multiples)
-        //{
-        //    LargeNumberMultiplier lm = new LargeNumberMultiplier();
-        //    IList<string> results = new List<string>();
+        #endregion
 
-        //    for (long i = 1; i <= multiples; i++)
-        //    {
-        //        results.Add(lm.Compute(new List<string>() { number, i.ToString() }));
-        //    }
-        //    return results;
-        //}
+        #region long[] representation of numbers
+        public long[] TrimLeadingZeros(long[] num)
+        {
+            if (num == null)
+                return num;
+
+            int finalSz = num.Length;
+            if (num[finalSz - 1] != 0)
+            {
+                return num;
+            }
+            for (int i = num.Length - 1; i >= 0; i--)
+            {
+                if (num[i] > 0)
+                    return num;
+
+                if (num[i] == 0)
+                    finalSz--;
+            }
+            long[] reduced = new long[finalSz];
+            for (var i = 0; i < num.Length; i++)
+            {
+                reduced[i] = num[i];
+            }
+            return reduced;
+        }
+
+        public bool IsZeroNumber(long[] num)
+        {
+            for (int i = 0; i < num.Length; i++)
+            {
+                if (num[i] != 0)
+                    return false;
+            }
+            return true;
+        }
+
+        public bool OneEqualToTwo(long[] one, long[] two)
+        {
+            var len = one.Length > two.Length ? two.Length : one.Length;
+
+            for (var i = 0; i < len; i++)
+            {
+                if (one[i] != two[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool OneGreaterThanTwo(long[] one, long[] two)
+        {
+            if (OneEqualToTwo(one, two))
+                return false;
+            else if (IsZeroNumber(one) && !IsZeroNumber(two))
+                return false;
+            else if (!IsZeroNumber(one) && IsZeroNumber(two))
+                return true;
+            else if (!IsZeroNumber(one) && !IsZeroNumber(two))
+            {
+                var o = TrimLeadingZeros(one);
+                var t = TrimLeadingZeros(two);
+                if (o.Length > t.Length)
+                {
+                    return true;
+                }
+                else if (o.Length < t.Length)
+                {
+                    return false;
+                }
+                else if (o.Length == t.Length)
+                {
+                    for (long i = 0; i < o.Length; i++)
+                    {
+                        if (o[i] > t[i])
+                        {
+                            return true;
+                        }
+                        else if (o[i] < t[i])
+                        {
+                            return false;
+                        }
+                        else if (o[i] == t[i])
+                        {
+                            continue;
+                        }
+                    }
+                    return false;
+                    //should never reach here, n==d check above should have handled this
+                }
+                else return false;
+            }
+            else return false;
+        }
+        #endregion
     }
 }

@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\Number.cs" />
     <Compile Include="Utils\ArithmeticUtils.cs" />
     <Compile Include="Calculators\LargeToOneNumberMultiplier.cs" />
     <Compile Include="Analytics\ProgramConsts.cs" />

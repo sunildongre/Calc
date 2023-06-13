@@ -64,7 +64,7 @@ namespace Calc
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
                             s.Compute(nums), 
-                            ProgramConsts.Instance.AdditionBlockSize)
+                            ProgramConsts.Instance.BlockSize)
                         );
                 case 'x':
                 case 'm':
@@ -73,7 +73,7 @@ namespace Calc
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
                             m.Compute(nums), 
-                            ProgramConsts.Instance.AdditionBlockSize)
+                            ProgramConsts.Instance.BlockSize)
                         );
                 case '/':
                 case 'd':
@@ -81,7 +81,7 @@ namespace Calc
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
                             d.Compute(nums), 
-                            ProgramConsts.Instance.AdditionBlockSize)
+                            ProgramConsts.Instance.BlockSize)
                         );
                 default:
                     ProgramMessages.Instance.PrintHelpText();
