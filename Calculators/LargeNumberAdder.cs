@@ -109,19 +109,20 @@ namespace Calc.Calculators
             });
 
             long y = 0;
-            IList<long> result = new List<long>();
-            for (var i = 0; i < lMax; i++)
+            var res = new long[lMax+2];
+            var ii = 0;
+            for (; ii < lMax; ii++)
             {
-                au.GetCarryBaseBlock(pos_total[i] + carry, ref y, ref carry, carry_block);
-                result.Add(y);
+                au.GetCarryBaseBlock(pos_total[ii] + carry, ref y, ref carry, carry_block);
+                res[ii] = y;
             }
 
             if (carry != 0)
             {
-                result.Add(carry);
+                res[ii] = carry;
             }
             CalcLogger.Instance.DebugConsoleLogLine("Adding up results took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
-            return result.ToArray();
+            return res;
         }
         #endregion
     }
