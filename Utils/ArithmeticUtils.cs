@@ -215,13 +215,8 @@ namespace Calc.Utils
         //IDictionary<long, long[]> multiples = new Dictionary<long, long[]>();
         private long[][] _multiples = new long[ProgramConsts.Instance.Base10BlockDigitCount][];
 
-        public long[][] Multiples
-        {
-            get
-            {
-                return _multiples; 
-            } 
-        }  
+        public long[][] Multiples => _multiples;
+
         public long[] GetCachedMultiple(long[] number, long multiple)
         {
             var lnm = new LargeToOneNumberMultiplier();

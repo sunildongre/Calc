@@ -17,6 +17,7 @@ namespace Calc
             var t1 = System.DateTime.Now;
             // need a fast input parser
             ArithmeticUtils au = ArithmeticUtils.Instance;
+
             // this will filter the operating mode and will be used by the Program IO handler when it is invoked
             arguments = ProgramInputValidator.Instance.ValidateInputParameters(args);
 
@@ -73,7 +74,7 @@ namespace Calc
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
                             m.Compute(nums), 
-                            ProgramConsts.Instance.BlockSize)
+                            ProgramConsts.Instance.AdditionBlockSize)
                         );
                 case '/':
                 case 'd':

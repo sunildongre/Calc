@@ -15,6 +15,7 @@ namespace Calc.Calculators
         private readonly ArithmeticUtils au = ArithmeticUtils.Instance;
         private readonly NumercStringUtils nsu = new NumercStringUtils();
 
+        #region IList<string>
         public string Compute(IList<string> numbers)
         {
             var dt = DateTime.Now;
@@ -64,7 +65,9 @@ namespace Calc.Calculators
 
             return nsu.TrimLeadingZeros(sb.ToString());
         }
+        #endregion
 
+        #region long[]
         public long[] Compute(long[][] numbers)
         {
             var dt = DateTime.Now;
@@ -90,7 +93,13 @@ namespace Calc.Calculators
                     if (lst != null)
                     {
                         pos_total[(int)i] = checked(pos_total[(int)i]+ lst.ElementAtOrDefault((int)i));
-                        //if (pos_total[(int)i].ToString().Length > ProgramConsts.Instance.AdditionBlockSize)
+
+                        // enable below if you run over the limit for the largest intermediate sum for a column 
+                        // most likely reducing the AdditionBlockSize will resolve the issue. 
+                        // Theoritical limit is (long.MaxValue / 9) count of values in a column to add at 
+                        // AdditionBlockSize = 1
+
+                        //if (pos_total[(int)i].ToString().Length >= ProgramConsts.Instance.Base10AdditionBlockDigitCount)
                         //{
                         //    CalcLogger.Instance.DebugConsoleLogLine("intermediate :" + pos_total[(int)i]);
                         //}
@@ -114,5 +123,6 @@ namespace Calc.Calculators
             CalcLogger.Instance.DebugConsoleLogLine("Adding up results took: " + (DateTime.Now - dt).TotalMilliseconds + " ms");
             return result.ToArray();
         }
+        #endregion
     }
 }

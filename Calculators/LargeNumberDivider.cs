@@ -25,12 +25,18 @@ namespace Calc.Calculators
             d = numbers[1];
 
             if (nsu.IsZeroString(n))
+            {
                 return "0";
+            }
             else if (nsu.IsZeroString(d))
+            {
                 throw new DivideByZeroException();
+            }
 
             if (n == d)
+            {
                 return "1";
+            }
 
             // assumption n > d 
             multiples = au.Get11Multiples(d);
@@ -70,7 +76,9 @@ namespace Calc.Calculators
                         remainder += n.Substring(nPos++, 1);
 
                         if (dq)
+                        {
                             q += "0";
+                        }
 
                         dq = true;
                     } while (nsu.OneGreaterThanTwo(d, remainder));
