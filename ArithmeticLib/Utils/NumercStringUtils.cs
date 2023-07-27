@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Calc.Calculators;
+using ArithmeticLib.Calculators;
 
-namespace Calc
+namespace ArithmeticLib
 {
     public class NumercStringUtils
     {

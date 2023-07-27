@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Calc.Calculators;
-using Calc.DataTypes;
+using ArithmeticLib.Calculators;
+using ArithmeticLib.DataTypes;
 
-namespace Calc.Utils
+namespace ArithmeticLib.Utils
 {
 
     public class ArithmeticUtils

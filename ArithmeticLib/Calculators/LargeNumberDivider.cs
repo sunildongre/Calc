@@ -1,9 +1,9 @@
-﻿using Calc.Interface;
-using Calc.Utils;
+﻿using ArithmeticLib.Interface;
+using ArithmeticLib.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace Calc.Calculators
+namespace ArithmeticLib.Calculators
 {
     public class LargeNumberDivider : ILargeNumberComputer
     {

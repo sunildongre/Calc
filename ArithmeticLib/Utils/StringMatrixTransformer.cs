@@ -4,7 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calc
+namespace ArithmeticLib
 {
     public class StringMatrixTransformer
     {

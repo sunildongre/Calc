@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Calc.DataTypes;
+using ArithmeticLib.DataTypes;
 
 namespace Calc.Utils
 {

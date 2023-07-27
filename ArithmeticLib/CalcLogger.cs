@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Calc
+namespace ArithmeticLib
 {
     public class CalcLogger
     {

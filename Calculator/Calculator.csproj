@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="TestFiles\add.txt" />
+    <None Remove="TestFiles\div.txt" />
+    <None Remove="TestFiles\divtestmult.txt" />
+    <None Remove="TestFiles\mult.txt" />
+    <None Remove="TestFiles\mult1.txt" />
+    <None Remove="TestFiles\sub.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TestFiles\add.txt" />
+    <Content Include="TestFiles\div.txt" />
+    <Content Include="TestFiles\divtestmult.txt" />
+    <Content Include="TestFiles\mult.txt" />
+    <Content Include="TestFiles\mult1.txt" />
+    <Content Include="TestFiles\sub.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArithmeticLib\ArithmeticLib.csproj">
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

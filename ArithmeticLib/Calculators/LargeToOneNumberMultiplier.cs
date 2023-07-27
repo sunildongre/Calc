@@ -1,10 +1,10 @@
-﻿using Calc.Interface;
-using Calc.Utils;
+﻿using ArithmeticLib.Interface;
+using ArithmeticLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Calc.Calculators
+namespace ArithmeticLib.Calculators
 {
 
     public class LargeToOneNumberMultiplier : ILargeNumberComputer

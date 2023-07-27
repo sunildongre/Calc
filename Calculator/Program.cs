@@ -1,5 +1,7 @@
-﻿using Calc.Utils;
-using Calc.Calculators;
+﻿using ArithmeticLib.Utils;
+using ArithmeticLib.Calculators;
+using ArithmeticLib;
+using Calc.Utils;
 
 namespace Calc
 {
@@ -27,7 +29,7 @@ namespace Calc
             CalcLogger.Instance.DebugConsoleLogLine(num2);
             var op = arguments[1].ToCharArray()[0];
 
-            
+
             ProgramIOHandler.Instance.HandleOutput(args, Run(num1, num2, op), t1);
             var t2 = System.DateTime.Now;
 
@@ -56,7 +58,7 @@ namespace Calc
                     smt.RealignBlockSizes(nums, 2, 8);
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
-                            a.Compute(nums), 
+                            a.Compute(nums),
                             ProgramConsts.Instance.AdditionBlockSize)
                         );
                 case 's':
@@ -64,7 +66,7 @@ namespace Calc
                     LargeNumberSubtractor s = new LargeNumberSubtractor();
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
-                            s.Compute(nums), 
+                            s.Compute(nums),
                             ProgramConsts.Instance.BlockSize)
                         );
                 case 'x':
@@ -73,7 +75,7 @@ namespace Calc
                     LargeNumberMultiplier m = new LargeNumberMultiplier();
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
-                            m.Compute(nums), 
+                            m.Compute(nums),
                             ProgramConsts.Instance.AdditionBlockSize)
                         );
                 case '/':
@@ -81,7 +83,7 @@ namespace Calc
                     LargeNumberDivider d = new LargeNumberDivider();
                     return nsu.TrimLeadingZeros(
                         smt.TransformLongBlockArrayToString(
-                            d.Compute(nums), 
+                            d.Compute(nums),
                             ProgramConsts.Instance.BlockSize)
                         );
                 default:

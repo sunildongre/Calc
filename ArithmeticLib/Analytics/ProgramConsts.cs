@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Calc
+namespace ArithmeticLib
 {
     public class ProgramConsts
     {
@@ -18,9 +18,9 @@ namespace Calc
             }
         }
 
-        public int BlockSize => 2;
+        public int BlockSize => 5;
 
-        public int AdditionBlockSize => 4;
+        public int AdditionBlockSize => 15;
         
         public int Base10AdditionBlockDigitCount => (int)Math.Pow(10, AdditionBlockSize);
 

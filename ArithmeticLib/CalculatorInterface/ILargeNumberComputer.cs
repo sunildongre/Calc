@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Calc.Interface
+namespace ArithmeticLib.Interface
 {
     public interface ILargeNumberComputer
     {

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Calculator": {
+      "commandName": "Project",
+      "commandLineArgs": "-f ..\\..\\..\\TestFiles\\mult.txt"
+    }
+  }
+}

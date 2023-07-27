@@ -1,4 +1,4 @@
-﻿namespace Calc.DataTypes
+﻿namespace ArithmeticLib.DataTypes
 {
     public enum RunMode
     {

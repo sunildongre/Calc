@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Calc.Interface;
+using ArithmeticLib.Interface;
 
-namespace Calc.Calculators
+namespace ArithmeticLib.Calculators
 {
     public class LargeNumberSubtractor : ILargeNumberComputer
     {
